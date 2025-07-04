@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.next/
+out/
+artifacts/
+cache/
+
+# Env and system
+.env
+.DS_Store
+.pnpm-debug.log
+
+# IDE configs
+.vscode/
+.idea/
