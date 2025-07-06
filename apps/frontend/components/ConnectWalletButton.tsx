@@ -16,10 +16,10 @@ export default function ConnectWalletButton() {
         </div>
       ) : (
         <button
-          className="bg-primary text-white px-4 py-2 rounded"
+          className="text-text bg-primary px-4 py-2 rounded-lg border border-border shadow-lg hover:bg-primaryHover  transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-ring"
           onClick={() => connect({ connector: metaMask() })}
         >
-          Connect walletd
+          Connect wallet
         </button>
       )}
     </div>
