@@ -15,8 +15,11 @@ export default function ConnectWalletButton() {
           <button onClick={() => disconnect()}>Disconnect</button>
         </div>
       ) : (
-        <button onClick={() => connect({ connector: metaMask() })}>
-          Connect wallet
+        <button
+          className="bg-primary text-white px-4 py-2 rounded"
+          onClick={() => connect({ connector: metaMask() })}
+        >
+          Connect walletd
         </button>
       )}
     </div>
