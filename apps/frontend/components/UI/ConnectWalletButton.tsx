@@ -1,10 +1,11 @@
 "use client";
 
 import { shortenAddress } from "@/lib/utils";
-import { useAccount, useDisconnect, useConnect } from "wagmi";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { metaMask } from "wagmi/connectors";
 import Blokies from "react-blockies";
 import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 export default function ConnectWalletButton() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -17,6 +18,15 @@ export default function ConnectWalletButton() {
       setIsMounted(true);
     }
   }, []);
+
+  // TODO until we do the full backend verification
+  useEffect(() => {
+    if (isConnected) {
+      Cookies.set("walletConnected", "true", { path: "/" });
+    } else {
+      Cookies.remove("walletConnected");
+    }
+  }, [isConnected]);
 
   if (!isMounted)
     // TODO use skeleton
@@ -34,6 +44,7 @@ export default function ConnectWalletButton() {
               className="rounded-full"
             />
             <p>{shortenAddress(address)}</p>
+            <button onClick={() => disconnect()}>Disconnect</button>
           </div>
         ) : null
       ) : (
