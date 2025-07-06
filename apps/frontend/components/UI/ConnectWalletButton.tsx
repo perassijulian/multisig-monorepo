@@ -4,11 +4,24 @@ import { shortenAddress } from "@/lib/utils";
 import { useAccount, useDisconnect, useConnect } from "wagmi";
 import { metaMask } from "wagmi/connectors";
 import Blokies from "react-blockies";
+import { useEffect, useState } from "react";
 
 export default function ConnectWalletButton() {
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
+
+  useEffect(() => {
+    if (!isMounted) {
+      setIsMounted(true);
+    }
+  }, []);
+
+  if (!isMounted)
+    // TODO use skeleton
+    return <div className="w-[150px] h-10 bg-bg animate-pulse rounded-md" />;
+
   return (
     <div>
       {isConnected ? (
