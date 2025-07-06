@@ -7,6 +7,7 @@
 :root {
   --color-bg: #ffffff;
   --color-bg-subtle: #f9fafb;
+  --color-bg-more-subtle: #f6f6f6;
   --color-text: #0f172a;
   --color-text-muted: #64748b;
 
@@ -27,6 +28,7 @@
 .dark {
   --color-bg: #0f172a;
   --color-bg-subtle: #1e293b;
+  --color-bg-more-subtle: #272b34;
   --color-text: #f8fafc;
   --color-text-muted: #94a3b8;
 

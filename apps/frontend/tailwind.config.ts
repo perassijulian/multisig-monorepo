@@ -12,6 +12,7 @@ export default {
       colors: {
         bg: "var(--color-bg)",
         bgSubtle: "var(--color-bg-subtle)",
+        bgMoreSubtle: "var(--color-bg-more-subtle)",
         text: "var(--color-text)",
         textMuted: "var(--color-text-muted)",
         primary: "var(--color-primary)",
