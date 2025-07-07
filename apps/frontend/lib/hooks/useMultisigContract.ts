@@ -30,11 +30,15 @@ export function useWriteMultisigContract<
   functionName: TFunctionName;
   args: ArgsFor<TFunctionName>;
 }) {
-  const { writeContract } = useWriteContract();
-  return writeContract({
-    abi: MULTISIG_TYPED_ABI,
-    address: MULTISIG_ADDRESS,
-    functionName,
-    args,
-  });
+  const { writeContractAsync } = useWriteContract();
+
+  return {
+    writeAsync: () =>
+      writeContractAsync({
+        abi: MULTISIG_TYPED_ABI,
+        address: MULTISIG_ADDRESS,
+        functionName,
+        args,
+      }),
+  };
 }

@@ -3,12 +3,17 @@
 import { TransactionFormValues } from "@/types/transaction";
 import { useState } from "react";
 import Button from "../UI/Button";
+import { useWriteMultisigContract } from "@/lib/hooks/useMultisigContract";
 
 export default function TransactionForm() {
   const [formData, setFormData] = useState<TransactionFormValues>({
     to: "",
     value: "",
     data: "",
+  });
+  const { writeAsync, isLoading, data, status } = useWriteMultisigContract({
+    functionName: "submitTransaction",
+    args: [formData.to, BigInt(formData.value), formData.data],
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,9 +23,17 @@ export default function TransactionForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+
+    try {
+      const tx = await writeAsync();
+      console.log(tx);
+      console.log(data, " data");
+      console.log(status, " status");
+    } catch (err) {
+      console.error("Transaction failed", err);
+    }
   };
 
   return (
