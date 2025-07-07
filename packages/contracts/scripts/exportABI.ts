@@ -22,7 +22,7 @@ export function exportContractToFrontend({
     artifact.abi,
     null,
     2
-  )};
+  )} as const;
   `;
 
   fs.writeFileSync(outputPath, output.trim() + "\n");
