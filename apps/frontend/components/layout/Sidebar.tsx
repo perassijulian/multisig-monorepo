@@ -11,9 +11,11 @@ import Button from "../UI/Button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useConfig } from "wagmi";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const config = useConfig();
   const onClick = () => {
     console.log("holi");
   };
@@ -29,7 +31,7 @@ export default function Sidebar() {
   return (
     <nav className="bg-bgSubtle space-y-2 h-screen w-64">
       <div className="bg-secondary w-full flex justify-center text-sm">
-        Arbitrum
+        {config.chains[0].name ?? "Not detected"}
       </div>
       <div className="px-2">
         <div>account info</div>
