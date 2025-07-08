@@ -1,21 +1,23 @@
 import { useReadContract, useWriteContract } from "wagmi";
 import { MULTISIG_ADDRESS } from "../contracts/multisig";
 import {
-  ArgsFor,
+  ArgsForWrite,
+  ArgsForRead,
   MultisigReadFn,
   MultisigWriteFn,
   MULTISIG_TYPED_ABI,
 } from "../contracts/multisig.types";
+import { Abi } from "abitype";
 
-export function useReadMultisigContract({
+export function useReadMultisigContract<TFunctionName extends MultisigReadFn>({
   functionName,
   args,
 }: {
-  functionName: MultisigReadFn;
-  args?: unknown[];
+  functionName: TFunctionName;
+  args?: ArgsForRead<TFunctionName>;
 }) {
   return useReadContract({
-    abi: MULTISIG_TYPED_ABI,
+    abi: MULTISIG_TYPED_ABI as Abi,
     address: MULTISIG_ADDRESS,
     functionName,
     args,
@@ -27,9 +29,9 @@ export function useWriteMultisigContract<
 >() {
   const { writeContractAsync } = useWriteContract();
 
-  return (functionName: TFunctionName, args: ArgsFor<TFunctionName>) => {
+  return (functionName: TFunctionName, args: ArgsForWrite<TFunctionName>) => {
     return writeContractAsync({
-      abi: MULTISIG_TYPED_ABI,
+      abi: MULTISIG_TYPED_ABI as Abi,
       address: MULTISIG_ADDRESS,
       functionName,
       args,

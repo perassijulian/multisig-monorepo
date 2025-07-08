@@ -21,7 +21,12 @@ export type MultisigWriteFn = ExtractAbiFunctionNames<
 >;
 
 // Given a function name, get the argument types
-export type ArgsFor<TName extends MultisigWriteFn> =
+export type ArgsForWrite<TName extends MultisigWriteFn> =
+  AbiParametersToPrimitiveTypes<
+    ExtractAbiFunction<typeof MULTISIG_TYPED_ABI, TName>["inputs"]
+  >;
+
+export type ArgsForRead<TName extends MultisigReadFn> =
   AbiParametersToPrimitiveTypes<
     ExtractAbiFunction<typeof MULTISIG_TYPED_ABI, TName>["inputs"]
   >;
