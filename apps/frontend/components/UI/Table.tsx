@@ -1,10 +1,4 @@
-export default function Table({
-  head,
-  body,
-}: {
-  head: string[];
-  body: string[][];
-}) {
+export default function Table({ head, body }: { head: any[]; body: any[][] }) {
   return (
     <div className="overflow-x-auto rounded border border-border shadow-sm">
       <table className="min-w-full text-sm text-left border-collapse">

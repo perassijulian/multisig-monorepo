@@ -24,7 +24,7 @@ async function main() {
     address,
     artifactPath: path.join(
       __dirname,
-      "../ignition/deployments/chain-31337/artifacts/Multisig#MultiSigWallet.json"
+      "../ignition/deployments/chain-31337/artifacts/MultisigWallet#MultiSigWallet.json"
     ),
     outputPath: path.join(
       __dirname,
