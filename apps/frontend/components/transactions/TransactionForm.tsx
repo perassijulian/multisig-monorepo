@@ -11,26 +11,28 @@ export default function TransactionForm() {
     value: "",
     data: "",
   });
-  const { writeAsync, isLoading, data, status } = useWriteMultisigContract({
-    functionName: "submitTransaction",
-    args: [formData.to, BigInt(formData.value), formData.data],
-  });
+  const submitTransaction = useWriteMultisigContract();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((formData) => ({
-      ...formData,
-      [e.target.name]: e.target.value,
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const to = formData.to.startsWith("0x") ? formData.to : `0x${formData.to}`;
+    const data = formData.data.startsWith("0x")
+      ? formData.data
+      : `0x${formData.data}`;
+
     try {
-      const tx = await writeAsync();
-      console.log(tx);
-      console.log(data, " data");
-      console.log(status, " status");
+      const tx = await submitTransaction("submitTransaction", [
+        to as `0x${string}`,
+        BigInt(formData.value),
+        data as `0x${string}`,
+      ]);
+      console.log("tx processed: ", tx);
     } catch (err) {
       console.error("Transaction failed", err);
     }
