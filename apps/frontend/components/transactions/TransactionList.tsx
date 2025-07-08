@@ -5,8 +5,9 @@ import Table from "../UI/Table";
 import { MULTISIG_ABI, MULTISIG_ADDRESS } from "@/lib/contracts/multisig";
 import { useReadContracts } from "wagmi";
 import { shortenAddress } from "@/lib/utils";
+import TransactionActions from "./TransactionActions";
 
-type TxRow = [string, number, string, string, number];
+type TxRow = [string, number, string, string, number, React.ReactNode];
 
 export default function TransactionList() {
   const {
@@ -19,8 +20,9 @@ export default function TransactionList() {
 
   const transactionCount = Number(countData ?? 0);
 
+  //TODO make its own useReadManyMultisigContract hook
   const contracts = Array.from({ length: transactionCount }, (_, i) => ({
-    address: MULTISIG_ADDRESS,
+    address: MULTISIG_ADDRESS as `0x${string}`,
     abi: MULTISIG_ABI,
     functionName: "getTransaction",
     args: [BigInt(i)],
@@ -50,13 +52,21 @@ export default function TransactionList() {
         data,
         executed ? "Yes" : "No",
         Number(confirmations),
+        <TransactionActions />,
       ],
     ];
   });
 
   return (
     <Table
-      head={["Recipient", "Value", "Data", "Executed", "Positive Votes"]}
+      head={[
+        "Recipient",
+        "Value",
+        "Data",
+        "Executed",
+        "Positive Votes",
+        "Actions",
+      ]}
       body={body}
     />
   );

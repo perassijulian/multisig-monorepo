@@ -13,7 +13,7 @@ export default function Table({ head, body }: { head: any[]; body: any[][] }) {
         </thead>
         <tbody className="divide-y divide-border">
           {body.map((row, j) => (
-            <tr key={j} className="hover:opacity-50">
+            <tr key={j} className="hover:opacity-70">
               {row.map((item, i) => (
                 <td key={i} className="py-2 px-4 text-gray-500">
                   {item}

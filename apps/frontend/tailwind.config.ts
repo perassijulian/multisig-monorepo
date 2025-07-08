@@ -26,6 +26,10 @@ export default {
         DEFAULT: "var(--radius-base)",
         lg: "var(--radius-lg)",
       },
+      dropShadow: {
+        glowGreen: "0 0 6px rgba(34,197,94,0.6)",
+        glowRed: "0 0 6px rgba(197, 34, 34, 0.6)",
+      },
     },
   },
   plugins: [],
