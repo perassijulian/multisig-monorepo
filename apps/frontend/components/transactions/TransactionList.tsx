@@ -42,7 +42,7 @@ export default function TransactionList() {
   if (errorContracts) return <div>{errorContracts.message}</div>;
   if (txData === undefined) return <div>No data</div>;
 
-  const body: TxRow[] = txData.flatMap((item) => {
+  const body: TxRow[] = txData.flatMap((item, txIndex) => {
     if (item.status !== "success" || !Array.isArray(item.result)) return [];
     const [to, value, data, executed, confirmations] = item.result;
     return [
@@ -52,7 +52,7 @@ export default function TransactionList() {
         data,
         executed ? "Yes" : "No",
         Number(confirmations),
-        <TransactionActions />,
+        <TransactionActions txIndex={txIndex} />,
       ],
     ];
   });
