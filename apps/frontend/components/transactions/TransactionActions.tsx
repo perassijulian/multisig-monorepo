@@ -8,7 +8,13 @@ import { cn } from "@/lib/utils";
 import { Check, X } from "lucide-react";
 import { useAccount } from "wagmi";
 
-export default function TransactionActions({ txIndex }: { txIndex: number }) {
+export default function TransactionActions({
+  txIndex,
+  executed,
+}: {
+  txIndex: number;
+  executed: boolean;
+}) {
   const handleWriteToContract = useWriteMultisigContract();
   const { address } = useAccount();
 
@@ -54,7 +60,7 @@ export default function TransactionActions({ txIndex }: { txIndex: number }) {
         <Check
           onClick={handleConfirm}
           className={cn(
-            isConfirmed
+            isConfirmed || executed
               ? "text-green-900"
               : "cursor-pointer text-green-500 transition-all duration-150 ease-in-out hover:text-green-400 hover:drop-shadow-glowGreen hover:scale-110"
           )}
@@ -62,7 +68,11 @@ export default function TransactionActions({ txIndex }: { txIndex: number }) {
       )}
       <X
         onClick={handleRevoke}
-        className="cursor-pointer text-red-500 transition-all duration-150 ease-in-out hover:text-red-400 hover:drop-shadow-glowRed hover:scale-110"
+        className={cn(
+          executed
+            ? "text-red-900"
+            : "cursor-pointer text-red-500 transition-all duration-150 ease-in-out hover:text-red-400 hover:drop-shadow-glowRed hover:scale-110"
+        )}
       />
     </div>
   );

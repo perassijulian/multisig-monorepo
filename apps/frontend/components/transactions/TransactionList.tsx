@@ -6,8 +6,9 @@ import { MULTISIG_ABI, MULTISIG_ADDRESS } from "@/lib/contracts/multisig";
 import { useReadContracts } from "wagmi";
 import { shortenAddress } from "@/lib/utils";
 import TransactionActions from "./TransactionActions";
+import ExecutedStatus from "./ExecutedStatus";
 
-type TxRow = [string, number, string, string, number, React.ReactNode];
+type TxRow = [string, number, string, React.ReactNode, number, React.ReactNode];
 
 export default function TransactionList() {
   const {
@@ -45,28 +46,26 @@ export default function TransactionList() {
   const body: TxRow[] = txData.flatMap((item, txIndex) => {
     if (item.status !== "success" || !Array.isArray(item.result)) return [];
     const [to, value, data, executed, confirmations] = item.result;
+    const confirmationsNumber = Number(confirmations);
     return [
       [
         shortenAddress(to),
         Number(value),
         data,
-        executed ? "Yes" : "No",
-        Number(confirmations),
-        <TransactionActions txIndex={txIndex} />,
+        <ExecutedStatus
+          executed={executed}
+          confirmationsNumber={confirmationsNumber}
+          txIndex={txIndex}
+        />,
+        confirmationsNumber,
+        <TransactionActions executed={executed} txIndex={txIndex} />,
       ],
     ];
   });
 
   return (
     <Table
-      head={[
-        "Recipient",
-        "Value",
-        "Data",
-        "Executed",
-        "Positive Votes",
-        "Actions",
-      ]}
+      head={["Recipient", "Value", "Data", "Executed", "Votes", "Actions"]}
       body={body}
     />
   );
