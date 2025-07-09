@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.81.5",
+    "@wagmi/core": "^2.17.3",
     "abitype": "^1.0.8",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
