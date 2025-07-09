@@ -1,6 +1,6 @@
 export default function Table({ head, body }: { head: any[]; body: any[][] }) {
   return (
-    <div className="overflow-x-auto rounded border border-border shadow-sm">
+    <div className="overflow-x-auto rounded border border-border shadow-xl">
       <table className="min-w-full text-sm text-left border-collapse">
         <thead className="bg-bgSubtle text-text">
           <tr>

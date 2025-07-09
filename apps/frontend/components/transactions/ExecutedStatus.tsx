@@ -21,13 +21,13 @@ export default function ExecutedStatus({
 
   const executeTransaction = useWriteMultisigContract();
 
+  console.log({
+    txIndex,
+    executed,
+    confirmationsNumber,
+    confirmationsRequired,
+  });
   const handleExecution = async () => {
-    console.log({
-      txIndex,
-      executed,
-      confirmationsNumber,
-      confirmationsRequired,
-    });
     try {
       const tx = await executeTransaction("executeTransaction", [
         BigInt(txIndex),
@@ -43,7 +43,7 @@ export default function ExecutedStatus({
 
   if (executed) return <p className="text-xs text-green-800">EXECUTED</p>;
 
-  if (confirmationsNumber <= confirmationsRequired)
+  if (confirmationsNumber < confirmationsRequired)
     return <p className="text-xs text-gray-700">NOT READY</p>;
 
   return (

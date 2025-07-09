@@ -29,7 +29,7 @@ export default function Sidebar() {
   ];
 
   return (
-    <nav className="bg-bgSubtle space-y-2 h-screen w-64">
+    <nav className="bg-bgSubtle space-y-2 h-screen w-64 border-r border-border">
       <div className="bg-secondary w-full flex justify-center text-sm">
         {config.chains[0].name ?? "Not detected"}
       </div>
