@@ -7,14 +7,22 @@ import { useReadContracts } from "wagmi";
 import { shortenAddress } from "@/lib/utils";
 import TransactionActions from "./TransactionActions";
 import ExecutedStatus from "./ExecutedStatus";
+import { SetStateAction, useEffect } from "react";
 
 type TxRow = [string, number, string, React.ReactNode, number, React.ReactNode];
 
-export default function TransactionList() {
+export default function TransactionList({
+  triggerRefetchTxs,
+  setTriggerRefetchTxs,
+}: {
+  triggerRefetchTxs: boolean;
+  setTriggerRefetchTxs: React.Dispatch<SetStateAction<boolean>>;
+}) {
   const {
     data: countData,
     error: errorTxCount,
     isLoading: isLoadingTxCount,
+    refetch: refetchCount,
   } = useReadMultisigContract({
     functionName: "getTransactionCount",
   });
@@ -33,9 +41,18 @@ export default function TransactionList() {
     data: txData,
     error: errorContracts,
     isLoading: isLoadingContracts,
+    refetch,
   } = useReadContracts({
     contracts,
   });
+
+  useEffect(() => {
+    if (triggerRefetchTxs) {
+      refetchCount();
+      refetch();
+      setTriggerRefetchTxs(false);
+    }
+  }, [triggerRefetchTxs]);
 
   // TODO add skeleton
   if (isLoadingTxCount || isLoadingContracts) return <div>Loading...</div>;

@@ -1,11 +1,15 @@
 "use client";
 
 import { TransactionFormValues } from "@/types/transaction";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import Button from "../UI/Button";
 import { useWriteMultisigContract } from "@/lib/hooks/useMultisigContract";
 
-export default function TransactionForm() {
+export default function TransactionForm({
+  setTriggerRefetchTxs,
+}: {
+  setTriggerRefetchTxs: React.Dispatch<SetStateAction<boolean>>;
+}) {
   const [formData, setFormData] = useState<TransactionFormValues>({
     to: "",
     value: "",
@@ -32,6 +36,7 @@ export default function TransactionForm() {
         BigInt(formData.value),
         data as `0x${string}`,
       ]);
+      setTriggerRefetchTxs(true);
       console.log("tx processed: ", tx);
     } catch (err) {
       console.error("Transaction failed", err);
