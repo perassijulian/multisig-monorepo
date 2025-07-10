@@ -5,12 +5,8 @@ import {
   useReadMultisigContract,
 } from "@/lib/hooks/useMultisigContract";
 import Table from "../UI/Table";
-import { MULTISIG_ABI, MULTISIG_ADDRESS } from "@/lib/contracts/multisig";
-import { useReadContracts } from "wagmi";
-import { shortenAddress } from "@/lib/utils";
-import TransactionActions from "./TransactionActions";
-import ExecutedStatus from "./ExecutedStatus";
 import { SetStateAction, useEffect } from "react";
+import { parseTransactionRows } from "@/lib/tx/parsers";
 
 type TxRow = [string, number, string, React.ReactNode, number, React.ReactNode];
 
@@ -53,25 +49,7 @@ export default function TransactionList({
   if (errorContracts) return <div>{errorContracts.message}</div>;
   if (txData === undefined) return <div>No data</div>;
 
-  const body: TxRow[] = txData.flatMap((item, txIndex) => {
-    if (item.status !== "success" || !Array.isArray(item.result)) return [];
-    const [to, value, data, executed, confirmations] = item.result;
-    const confirmationsNumber = Number(confirmations);
-    return [
-      [
-        shortenAddress(to),
-        Number(value),
-        data,
-        <ExecutedStatus
-          executed={executed}
-          confirmationsNumber={confirmationsNumber}
-          txIndex={txIndex}
-        />,
-        confirmationsNumber,
-        <TransactionActions executed={executed} txIndex={txIndex} />,
-      ],
-    ];
-  });
+  const body: TxRow[] = parseTransactionRows(txData);
 
   return (
     <Table
