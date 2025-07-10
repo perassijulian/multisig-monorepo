@@ -1,4 +1,10 @@
-export default function Table({ head, body }: { head: any[]; body: any[][] }) {
+export default function Table({
+  head,
+  body,
+}: {
+  head: React.ReactNode[];
+  body: React.ReactNode[][] | React.ReactNode;
+}) {
   return (
     <div className="overflow-x-auto rounded border border-border shadow-xl">
       <table className="min-w-full text-sm text-left border-collapse">
@@ -12,15 +18,23 @@ export default function Table({ head, body }: { head: any[]; body: any[][] }) {
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
-          {body.map((row, j) => (
-            <tr key={j} className="hover:opacity-70">
-              {row.map((item, i) => (
-                <td key={i} className="py-2 px-4 text-gray-500">
-                  {item}
-                </td>
-              ))}
+          {Array.isArray(body) ? (
+            body.map((row, j) => (
+              <tr key={j} className="hover:opacity-70">
+                {row.map((item, i) => (
+                  <td key={i} className="py-2 px-4 text-gray-500">
+                    {item}
+                  </td>
+                ))}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={head.length} className="py-4 px-4">
+                {body}
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
