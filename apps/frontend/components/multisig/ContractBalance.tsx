@@ -7,14 +7,22 @@ import Button from "../UI/Button";
 import { useModal } from "../context/ModalContext";
 import AddFunds from "./AddFunds";
 import { formatEther } from "viem";
+import { useToast } from "../context/ToastContext";
 
 export default function ContractBalance() {
   const { data, isLoading, error } = useBalance({ address: MULTISIG_ADDRESS });
+  const { showToast } = useToast();
   const { openModal, closeModal } = useModal();
   // TODO add skeleton
   if (isLoading) return <div>loading..</div>;
-  if (error) return <div>{error.message}</div>;
-  if (!data) return <div>Error while fetching</div>;
+  if (error) {
+    showToast({ message: error.message, type: "error" });
+    return;
+  }
+  if (!data) {
+    showToast({ message: "Error while fetching", type: "error" });
+    return;
+  }
 
   const balanceToDisplay = `${formatEtherBalance(formatEther(data.value))} ${
     data.symbol

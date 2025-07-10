@@ -6,6 +6,7 @@ import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Navbar from "@/components/layout/Navbar";
 import ModalProvider from "@/components/context/ModalContext";
+import ToastProvider from "@/components/context/ToastContext";
 
 const queryClient = new QueryClient();
 export default function RootLayout({
@@ -18,10 +19,12 @@ export default function RootLayout({
       <body>
         <WagmiProvider config={config}>
           <QueryClientProvider client={queryClient}>
-            <ModalProvider>
-              <Navbar />
-              {children}
-            </ModalProvider>
+            <ToastProvider>
+              <ModalProvider>
+                <Navbar />
+                {children}
+              </ModalProvider>
+            </ToastProvider>
           </QueryClientProvider>
         </WagmiProvider>
       </body>
