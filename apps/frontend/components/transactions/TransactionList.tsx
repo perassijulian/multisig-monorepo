@@ -1,6 +1,9 @@
 "use client";
 
-import { useReadMultisigContract } from "@/lib/hooks/useMultisigContract";
+import {
+  useMultisigTransactions,
+  useReadMultisigContract,
+} from "@/lib/hooks/useMultisigContract";
 import Table from "../UI/Table";
 import { MULTISIG_ABI, MULTISIG_ADDRESS } from "@/lib/contracts/multisig";
 import { useReadContracts } from "wagmi";
@@ -29,22 +32,12 @@ export default function TransactionList({
 
   const transactionCount = Number(countData ?? 0);
 
-  //TODO make its own useReadManyMultisigContract hook
-  const contracts = Array.from({ length: transactionCount }, (_, i) => ({
-    address: MULTISIG_ADDRESS as `0x${string}`,
-    abi: MULTISIG_ABI,
-    functionName: "getTransaction",
-    args: [BigInt(i)],
-  }));
-
   const {
     data: txData,
     error: errorContracts,
     isLoading: isLoadingContracts,
     refetch,
-  } = useReadContracts({
-    contracts,
-  });
+  } = useMultisigTransactions(transactionCount);
 
   useEffect(() => {
     if (triggerRefetchTxs) {
