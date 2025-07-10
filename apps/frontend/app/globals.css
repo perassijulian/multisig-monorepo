@@ -17,6 +17,9 @@
   --color-secondary: #10b981;
   --color-secondary-hover: #059669;
 
+  --color-skeleton-base: #e5e7eb;
+  --color-skeleton-highlight: #f3f4f6;
+
   --color-border: #e5e7eb;
   --color-ring: #c7d2fe;
 
@@ -37,6 +40,9 @@
 
   --color-secondary: #22d3ee;
   --color-secondary-hover: #06b6d4;
+
+  --color-skeleton-base: #374151;
+  --color-skeleton-highlight: #4b5563;
 
   --color-border: #334155;
   --color-ring: #7c3aed;

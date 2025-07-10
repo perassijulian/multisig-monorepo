@@ -19,6 +19,8 @@ export default {
         primaryHover: "var(--color-primary-hover)",
         secondary: "var(--color-secondary)",
         secondaryHover: "var(--color-secondary-hover)",
+        skeletonBase: "var(--color-skeleton-base)",
+        skeletonHighlight: "var(--color-skeleton-highlight)",
         border: "var(--color-border)",
         ring: "var(--color-ring)",
       },
@@ -29,6 +31,15 @@ export default {
       dropShadow: {
         glowGreen: "0 0 6px rgba(34,197,94,0.6)",
         glowRed: "0 0 6px rgba(197, 34, 34, 0.6)",
+      },
+      keyframes: {
+        shimmer: {
+          "0%": { backgroundPosition: "-1000px 0" },
+          "100%": { backgroundPosition: "1000px 0" },
+        },
+      },
+      animation: {
+        shimmer: "shimmer 5s infinite linear",
       },
     },
   },

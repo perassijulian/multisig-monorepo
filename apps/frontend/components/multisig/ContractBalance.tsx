@@ -8,30 +8,35 @@ import { useModal } from "../context/ModalContext";
 import AddFunds from "./AddFunds";
 import { formatEther } from "viem";
 import { useToast } from "../context/ToastContext";
+import Skeleton from "../UI/Skeleton";
 
 export default function ContractBalance() {
-  const { data, isLoading, error } = useBalance({ address: MULTISIG_ADDRESS });
+  const { data, error, isLoading } = useBalance({ address: MULTISIG_ADDRESS });
   const { showToast } = useToast();
   const { openModal, closeModal } = useModal();
   // TODO add skeleton
-  if (isLoading) return <div>loading..</div>;
   if (error) {
     showToast({ message: error.message, type: "error" });
     return;
   }
-  if (!data) {
+
+  if (!isLoading && !data) {
     showToast({ message: "Error while fetching", type: "error" });
     return;
   }
 
-  const balanceToDisplay = `${formatEtherBalance(formatEther(data.value))} ${
-    data.symbol
-  }`;
+  const balanceToDisplay =
+    isLoading || !data
+      ? ""
+      : `${formatEtherBalance(formatEther(data.value))} ${data.symbol}`;
+
   return (
     <div className="flex flex-row justify-between items-center bg-bgSubtle w-content border border-border rounded px-4 py-2 shadow-xl">
       <div>
         <h2 className="text-xl">Contract Balance</h2>
-        <h3 className="text-3xl mt-2">{balanceToDisplay}</h3>
+        <h3 className="text-3xl mt-2">
+          {isLoading ? <Skeleton height="h-10" /> : balanceToDisplay}
+        </h3>
       </div>
       <Button
         onClick={() => openModal(<AddFunds closeModal={closeModal} />)}
