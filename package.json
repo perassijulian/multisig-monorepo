@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "node": "cd packages/contracts && npx hardhat node",
+    "deploy-basic": "cd packages/contracts && npx hardhat run scripts/deploy-basic.ts --network localhost",
+    "dev": "cd apps/frontend && pnpm dev"
   },
   "keywords": [],
   "author": "",

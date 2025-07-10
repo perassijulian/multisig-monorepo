@@ -1,13 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
 import { sendFundsToContract } from "@/lib/tx/sendFundsToContract";
 import { useAccount } from "wagmi";
 import { useToast } from "../context/ToastContext";
 
-export default function AddFunds({ closeModal }: { closeModal: () => void }) {
+interface AddFundsProps {
+  closeModal: () => void;
+  setRefetchBalance: React.Dispatch<SetStateAction<boolean>>;
+}
+
+export default function AddFunds({
+  closeModal,
+  setRefetchBalance,
+}: AddFundsProps) {
   const [value, setValue] = useState<number | "">("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { showToast } = useToast();
@@ -37,6 +45,7 @@ export default function AddFunds({ closeModal }: { closeModal: () => void }) {
         return;
       }
       showToast({ message: "Funds sent successfully", type: "success" });
+      setRefetchBalance(true);
       closeModal();
     } catch (err) {
       showToast({ message: "Something went wrong", type: "error" });

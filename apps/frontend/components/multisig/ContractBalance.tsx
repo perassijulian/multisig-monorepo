@@ -9,12 +9,16 @@ import AddFunds from "./AddFunds";
 import { formatEther } from "viem";
 import { useToast } from "../context/ToastContext";
 import Skeleton from "../UI/Skeleton";
+import { useEffect, useState } from "react";
 
 export default function ContractBalance() {
-  const { data, error, isLoading } = useBalance({ address: MULTISIG_ADDRESS });
+  const [refetchBalance, setRefetchBalance] = useState<boolean>(false);
+  const { data, error, isLoading, refetch } = useBalance({
+    address: MULTISIG_ADDRESS,
+  });
   const { showToast } = useToast();
   const { openModal, closeModal } = useModal();
-  // TODO add skeleton
+
   if (error) {
     showToast({ message: error.message, type: "error" });
     return;
@@ -30,6 +34,13 @@ export default function ContractBalance() {
       ? ""
       : `${formatEtherBalance(formatEther(data.value))} ${data.symbol}`;
 
+  useEffect(() => {
+    if (refetchBalance) {
+      refetch();
+      setRefetchBalance(false);
+    }
+  }, [refetchBalance]);
+
   return (
     <div className="flex flex-row justify-between items-center bg-bgSubtle w-content border border-border rounded px-4 py-2 shadow-xl">
       <div>
@@ -39,7 +50,14 @@ export default function ContractBalance() {
         </h3>
       </div>
       <Button
-        onClick={() => openModal(<AddFunds closeModal={closeModal} />)}
+        onClick={() =>
+          openModal(
+            <AddFunds
+              setRefetchBalance={setRefetchBalance}
+              closeModal={closeModal}
+            />
+          )
+        }
         className="w-32"
       >
         Add funds
