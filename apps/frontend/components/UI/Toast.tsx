@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { CheckCircle, Info, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { createPortal } from "react-dom";
 
 interface ToastProps {
   message: string;
@@ -57,7 +58,8 @@ export default function Toast({
   }, [duration, onClose]);
 
   const { border, background, text, icon } = toastResources[type];
-  return (
+
+  const toast = (
     <div className="fixed inset-x-0 top-6 z-[9999] flex justify-center pointer-events-none w-full">
       <div
         role="alert"
@@ -79,4 +81,11 @@ export default function Toast({
       </div>
     </div>
   );
+
+  if (typeof window === "undefined") return null;
+
+  const toastRoot = document.getElementById("toast-root");
+  if (!toastRoot) return null;
+
+  return createPortal(toast, toastRoot);
 }

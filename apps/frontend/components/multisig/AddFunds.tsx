@@ -5,24 +5,24 @@ import Input from "../UI/Input";
 import Button from "../UI/Button";
 import { sendFundsToContract } from "@/lib/tx/sendFundsToContract";
 import { useAccount } from "wagmi";
+import { useToast } from "../context/ToastContext";
 
 export default function AddFunds({ closeModal }: { closeModal: () => void }) {
   const [value, setValue] = useState<number | "">("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { showToast } = useToast();
   const { address } = useAccount();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!value || value === 0) {
-      // TODO: toast.error("Please enter a valid amount");
-      console.warn("Missing or invalid value");
+      showToast({ message: "Please enter a valid amount", type: "error" });
       return;
     }
 
     if (!address) {
-      // TODO: toast.error("Wallet not connected");
-      console.warn("Missing address");
+      showToast({ message: "Wallet not connected", type: "error" });
       return;
     }
 
@@ -32,16 +32,15 @@ export default function AddFunds({ closeModal }: { closeModal: () => void }) {
       const res = await sendFundsToContract({ value, address });
 
       if (!res.success) {
+        showToast({ message: "Transaction failed", type: "error" });
         console.error(res.error);
-        // TODO: toast.error("Transaction failed");
         return;
       }
-
-      // TODO: toast.success("Funds sent successfully");
+      showToast({ message: "Funds sent successfully", type: "success" });
       closeModal();
     } catch (err) {
+      showToast({ message: "Something went wrong", type: "error" });
       console.error("Unhandled error:", err);
-      // TODO: toast.error("Something went wrong");
     } finally {
       setIsLoading(false);
     }

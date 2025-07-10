@@ -27,6 +27,7 @@ export default function RootLayout({
             </ToastProvider>
           </QueryClientProvider>
         </WagmiProvider>
+        <div id="toast-root" />
       </body>
     </html>
   );
