@@ -1,3 +1,4 @@
+import ConnectWalletButton from "@/components/UI/ConnectWalletButton";
 import { Box } from "lucide-react";
 
 export default function Home() {
@@ -25,7 +26,17 @@ export default function Home() {
           </ul>
         </div>
       </div>
-      <div className="w-full bg-bgSubtle rounded shadow-xl">side 1</div>
+      <div className="w-full rounded-xl p-10 bg-bgSubtle shadow-xl flex flex-col items-center justify-center gap-4">
+        <h2 className="text-2xl font-semibold text-[--color-text]">
+          Get Started
+        </h2>
+        <p className="text-[--color-text-muted] max-w-xs">
+          Connect your wallet to create or access your multisig account.
+        </p>
+        <div className="pt-2">
+          <ConnectWalletButton />
+        </div>
+      </div>
     </main>
   );
 }
