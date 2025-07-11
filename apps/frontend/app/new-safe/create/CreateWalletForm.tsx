@@ -52,10 +52,10 @@ export default function CreateWalletForm() {
   };
 
   return (
-    <div>
+    <div className="bg-bgSubtle border border-border rounded shadow-xl">
       <form onSubmit={handleSubmit}>
         {stepToRender()}
-        <div className="flex justify-around mt-8">
+        <div className="flex justify-around mt-6 py-4 border-t border-border">
           <Button
             onClick={() => back()}
             disabled={step === 1}
