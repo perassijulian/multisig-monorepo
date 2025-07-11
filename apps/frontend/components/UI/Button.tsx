@@ -8,6 +8,7 @@ interface ButtonProps {
   type?: "button" | "submit" | "reset";
   className?: string;
   disabled?: boolean;
+  variant?: "primary" | "secondary";
 }
 
 export default function Button({
@@ -16,17 +17,21 @@ export default function Button({
   type = "button",
   className,
   disabled = false,
+  variant = "primary",
 }: ButtonProps) {
+  const baseStyles =
+    "py-2 px-4 rounded border transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
+  const variantStyles = disabled
+    ? "bg-gray-800 text-textMuted"
+    : variant === "primary"
+    ? "bg-primary text-white border-border hover:bg-primaryHover"
+    : "bg-transparent text-primary border-primary hover:bg-black/50";
+
   return (
     <button
       onClick={onClick}
-      className={cn(
-        "py-2 px-4 rounded border border-border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-ring",
-        className,
-        disabled
-          ? "bg-gray-800 text-textMuted"
-          : "bg-primary hover:bg-primaryHover"
-      )}
+      className={cn(baseStyles, variantStyles, className)}
       type={type}
       disabled={disabled}
     >
