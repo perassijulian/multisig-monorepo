@@ -21,7 +21,7 @@ export default function Button({
     <button
       onClick={onClick}
       className={cn(
-        "w-full py-2 rounded border border-border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-ring",
+        "py-2 px-4 rounded border border-border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-ring",
         className,
         disabled
           ? "bg-gray-800 text-textMuted"

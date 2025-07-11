@@ -32,6 +32,7 @@ export default function ConnectWalletButton() {
     // TODO use skeleton
     return <div className="w-[150px] h-10 bg-bg animate-pulse rounded-md" />;
 
+  console.log(address);
   return (
     <div>
       {isConnected ? (
