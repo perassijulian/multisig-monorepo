@@ -37,9 +37,15 @@ export default {
           "0%": { backgroundPosition: "-1000px 0" },
           "100%": { backgroundPosition: "1000px 0" },
         },
+        aurora: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       },
       animation: {
         shimmer: "shimmer 5s infinite linear",
+        aurora: "aurora 30s ease-in-out infinite",
       },
     },
   },
