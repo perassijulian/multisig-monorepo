@@ -2,6 +2,7 @@
 
 import Input from "@/components/UI/Input";
 import { FormDataType } from "./CreateWalletForm";
+import { Fragment } from "react";
 
 interface ReviewType {
   formData: FormDataType;
@@ -9,6 +10,7 @@ interface ReviewType {
 }
 
 export default function Review({ formData, handleChange }: ReviewType) {
+  const { chain, name, signers, threshold } = formData;
   return (
     <div>
       <div className="flex items-center gap-4 border-b border-border p-4">
@@ -26,13 +28,19 @@ export default function Review({ formData, handleChange }: ReviewType) {
       <div className="py-4 px-14">
         <dl className="grid grid-cols-[120px_1fr] gap-y-4 gap-x-6 text-sm">
           <dt className="font-medium text-textMuted">Network</dt>
-          <dd className="text-text">{formData.chain}</dd>
+          <dd className="text-text">{chain}</dd>
           <dt className="font-medium text-textMuted">Name</dt>
-          <dd className="text-text">{formData.name}</dd>
-          <dt className="font-medium text-textMuted">Signers</dt>
-          <dd className="text-text">{formData.signers}</dd>
+          <dd className="text-text">{name}</dd>
+          {signers.map((signer, i) => (
+            <Fragment key={i}>
+              <dt className="font-medium text-textMuted">
+                {i === 0 ? "Signers" : ""}
+              </dt>
+              <dd className="text-text">{signer}</dd>
+            </Fragment>
+          ))}
           <dt className="font-medium text-textMuted">Threshold</dt>
-          <dd className="text-text">{`${formData.threshold} out of ${formData.threshold} signers`}</dd>
+          <dd className="text-text">{`${threshold} out of ${signers.length} signers`}</dd>
         </dl>
       </div>
     </div>

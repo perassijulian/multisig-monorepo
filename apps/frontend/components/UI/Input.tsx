@@ -8,6 +8,7 @@ interface InputProps {
   type?: string;
   required?: boolean;
   className?: string;
+  keyTag?: number;
 }
 
 export default function Input({
@@ -18,9 +19,10 @@ export default function Input({
   type = "text",
   required = false,
   className = "",
+  keyTag = 0,
 }: InputProps) {
   return (
-    <div>
+    <div key={keyTag}>
       <label htmlFor={name} className="mt-2 block text-sm font-medium">
         {label}
       </label>

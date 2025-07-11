@@ -9,7 +9,7 @@ import Review from "./Review";
 export type FormDataType = {
   name: string;
   chain: string;
-  signers: string;
+  signers: string[];
   threshold: number;
 };
 
@@ -19,7 +19,7 @@ export default function CreateWalletForm() {
   const emptyFormData = {
     name: "",
     chain: "",
-    signers: "",
+    signers: [""],
     threshold: 1,
   };
   const [formData, setFormData] = useState<FormDataType>(emptyFormData);
@@ -45,7 +45,7 @@ export default function CreateWalletForm() {
       case 1:
         return <SetUpBasics formData={formData} handleChange={handleChange} />;
       case 2:
-        return <SetSigners formData={formData} handleChange={handleChange} />;
+        return <SetSigners formData={formData} setFormData={setFormData} />;
       case 3:
         return <Review formData={formData} handleChange={handleChange} />;
     }
