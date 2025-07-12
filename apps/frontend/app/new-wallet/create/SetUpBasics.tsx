@@ -4,7 +4,6 @@ import Input from "@/components/UI/Input";
 import { FormDataType } from "./CreateWalletForm";
 import { useChains } from "wagmi";
 import { config } from "@/wagmiConfig";
-import Select from "@/components/UI/Select";
 import ChainSelect from "@/components/UI/Select";
 
 interface SetUpBasicsType {
@@ -41,6 +40,7 @@ export default function SetUpBasics({
           name="name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          required
         />
         <ChainSelect
           label="Network you want to deploy"

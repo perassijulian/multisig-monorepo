@@ -5,6 +5,7 @@ import SetUpBasics from "./SetUpBasics";
 import Button from "@/components/UI/Button";
 import SetSigners from "./SetSigners";
 import Review from "./Review";
+import { useAccount } from "wagmi";
 
 export type FormDataType = {
   name: string;
@@ -13,20 +14,21 @@ export type FormDataType = {
   threshold: number;
 };
 
-const steps = ["Set up basics", "Set signers", "Review"];
-
 export default function CreateWalletForm() {
+  const { address } = useAccount();
+
   const emptyFormData = {
-    name: "",
+    name: "My new wallet",
     chain: "",
-    signers: [""],
+    signers: [address as `0x${string}`],
     threshold: 1,
   };
-  const [formData, setFormData] = useState<FormDataType>(emptyFormData);
-  const [step, setStep] = useState<number>(1);
 
-  const next = () => setStep(Math.min(step + 1, steps.length));
-  const back = () => setStep(Math.max(step - 1, 1));
+  const [formData, setFormData] = useState<FormDataType>(emptyFormData);
+  const [step, setStep] = useState<number>(0);
+
+  const next = () => setStep(Math.min(step + 1, stepsComponents.length - 1));
+  const back = () => setStep(Math.max(step - 1, 0));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,28 +37,23 @@ export default function CreateWalletForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (step < steps.length) next();
+    if (step < stepsComponents.length) next();
   };
 
-  const stepToRender = () => {
-    switch (step) {
-      case 1:
-        return <SetUpBasics formData={formData} setFormData={setFormData} />;
-      case 2:
-        return <SetSigners formData={formData} setFormData={setFormData} />;
-      case 3:
-        return <Review formData={formData} handleChange={handleChange} />;
-    }
-  };
+  const stepsComponents = [
+    <SetUpBasics formData={formData} setFormData={setFormData} />,
+    <SetSigners formData={formData} setFormData={setFormData} />,
+    <Review formData={formData} handleChange={handleChange} />,
+  ];
 
   return (
     <div className="bg-bgSubtle border border-border rounded shadow-xl">
       <form onSubmit={handleSubmit}>
-        {stepToRender()}
+        {stepsComponents[step]}
         <div className="flex justify-around mt-6 py-4 border-t border-border">
           <Button
             onClick={() => back()}
-            disabled={step === 1}
+            disabled={step === 0}
             className="w-24"
             variant="secondary"
           >
