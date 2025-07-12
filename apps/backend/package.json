@@ -5,13 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:generate": "prisma generate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.12.4",
   "dependencies": {
+    "@prisma/client": "^6.11.1",
     "@types/cors": "^2.8.19",
     "@types/morgan": "^1.9.10",
     "cors": "^2.8.5",
