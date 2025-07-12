@@ -6,12 +6,14 @@ import { metaMask } from "wagmi/connectors";
 import Blokies from "react-blockies";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 export default function ConnectWalletButton() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
+  const router = useRouter();
 
   useEffect(() => {
     if (!isMounted) {
@@ -23,10 +25,11 @@ export default function ConnectWalletButton() {
   useEffect(() => {
     if (isConnected) {
       Cookies.set("walletConnected", "true", { path: "/" });
+      router.push("/welcome");
     } else {
       Cookies.remove("walletConnected");
     }
-  }, [isConnected]);
+  }, [isConnected, router]);
 
   if (!isMounted)
     // TODO use skeleton
