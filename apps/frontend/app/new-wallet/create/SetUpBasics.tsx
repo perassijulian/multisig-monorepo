@@ -16,10 +16,14 @@ export default function SetUpBasics({
   setFormData,
 }: SetUpBasicsType) {
   const chains = useChains({ config });
-  const chainOptions = chains.map((chain) => ({
-    label: chain.name,
-    value: chain.id,
-  }));
+  const chainOptions = [
+    { label: "Select your network", value: 0 },
+    ...chains.map((chain) => ({
+      label: chain.name,
+      value: chain.id,
+    })),
+  ];
+  console.log(chainOptions);
   return (
     <div>
       <div className="flex items-center gap-4 border-b border-border p-4">
@@ -44,8 +48,10 @@ export default function SetUpBasics({
         />
         <ChainSelect
           label="Network you want to deploy"
-          value={formData.chain}
-          onChange={(e) => setFormData({ ...formData, chain: e.target.value })}
+          value={Number(formData.chain)}
+          onChange={(val) => {
+            setFormData({ ...formData, chain: val });
+          }}
           options={chainOptions}
         />
       </div>

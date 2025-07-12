@@ -9,8 +9,8 @@ interface Option {
 
 interface ChainSelectProps {
   label?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  value: number;
+  onChange: (value: number) => void;
   options: Option[];
 }
 
@@ -30,11 +30,15 @@ export default function ChainSelect({
       <div className="relative">
         <select
           value={value}
-          onChange={onChange}
+          onChange={(e) => onChange(Number(e.target.value))}
           className="w-full appearance-none rounded border border-border px-2 py-1 pr-8 text-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value}>
+            <option
+              key={opt.value}
+              value={opt.value}
+              disabled={opt.value === 0}
+            >
               {opt.label}
             </option>
           ))}

@@ -9,7 +9,7 @@ import { useAccount } from "wagmi";
 
 export type FormDataType = {
   name: string;
-  chain: string;
+  chain: number;
   signers: string[];
   threshold: number;
 };
@@ -19,7 +19,7 @@ export default function CreateWalletForm() {
 
   const emptyFormData = {
     name: "My new wallet",
-    chain: "",
+    chain: 0,
     signers: [address as `0x${string}`],
     threshold: 1,
   };
@@ -37,7 +37,11 @@ export default function CreateWalletForm() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (step < stepsComponents.length) next();
+    if (step < stepsComponents.length - 1) {
+      next();
+    } else {
+      console.log(formData);
+    }
   };
 
   const stepsComponents = [
@@ -54,13 +58,13 @@ export default function CreateWalletForm() {
           <Button
             onClick={() => back()}
             disabled={step === 0}
-            className="w-24"
+            className="w-64"
             variant="secondary"
           >
             Back
           </Button>
-          <Button type="submit" className="w-24">
-            Next
+          <Button type="submit" className="w-64">
+            {step < stepsComponents.length - 1 ? "Next" : "Create new wallet"}
           </Button>
         </div>
       </form>
