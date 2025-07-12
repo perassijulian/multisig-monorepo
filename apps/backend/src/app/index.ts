@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import routes from "./routes";
+import { errorHandler } from "./middlewares/errorHandler";
 
 const app = express();
 
@@ -18,5 +19,8 @@ app.use("/api", routes);
 app.get("/status", (_: Request, res: Response) => {
   res.send({ ok: true });
 });
+
+// centralized error handler (always last)
+app.use(errorHandler);
 
 export { app };

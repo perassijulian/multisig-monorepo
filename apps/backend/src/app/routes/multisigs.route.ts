@@ -14,8 +14,8 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 
     const multisigs = await getMultisigsByUser(wallet);
     res.status(200).json(multisigs);
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 });
 
