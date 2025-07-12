@@ -23,7 +23,10 @@ export default function Input({
 }: InputProps) {
   return (
     <div key={keyTag}>
-      <label htmlFor={name} className="mt-2 block text-sm font-medium">
+      <label
+        htmlFor={name}
+        className="mt-2 mb-1 block text-sm font-medium text-textMuted"
+      >
         {label}
       </label>
       <input
@@ -34,7 +37,7 @@ export default function Input({
         onChange={onChange}
         required={required}
         className={cn(
-          "text-black w-full rounded px-2 py-1 border border-border mt-1",
+          "text-black w-full rounded px-2 py-1 border border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
           className
         )}
       />

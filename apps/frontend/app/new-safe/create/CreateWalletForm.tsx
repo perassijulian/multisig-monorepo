@@ -36,14 +36,12 @@ export default function CreateWalletForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (step < steps.length) next();
-
-    console.log(formData);
   };
 
   const stepToRender = () => {
     switch (step) {
       case 1:
-        return <SetUpBasics formData={formData} handleChange={handleChange} />;
+        return <SetUpBasics formData={formData} setFormData={setFormData} />;
       case 2:
         return <SetSigners formData={formData} setFormData={setFormData} />;
       case 3:

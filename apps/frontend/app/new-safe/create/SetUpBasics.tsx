@@ -2,16 +2,25 @@
 
 import Input from "@/components/UI/Input";
 import { FormDataType } from "./CreateWalletForm";
+import { useChains } from "wagmi";
+import { config } from "@/wagmiConfig";
+import Select from "@/components/UI/Select";
+import ChainSelect from "@/components/UI/Select";
 
 interface SetUpBasicsType {
   formData: FormDataType;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  setFormData: (data: FormDataType) => void;
 }
 
 export default function SetUpBasics({
   formData,
-  handleChange,
+  setFormData,
 }: SetUpBasicsType) {
+  const chains = useChains({ config });
+  const chainOptions = chains.map((chain) => ({
+    label: chain.name,
+    value: chain.id,
+  }));
   return (
     <div>
       <div className="flex items-center gap-4 border-b border-border p-4">
@@ -31,13 +40,13 @@ export default function SetUpBasics({
           label="Name of your multisig"
           name="name"
           value={formData.name}
-          onChange={handleChange}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
-        <Input
+        <ChainSelect
           label="Network you want to deploy"
-          name="chain"
           value={formData.chain}
-          onChange={handleChange}
+          onChange={(e) => setFormData({ ...formData, chain: e.target.value })}
+          options={chainOptions}
         />
       </div>
       <p className="text-sm text-textMuted px-14">
