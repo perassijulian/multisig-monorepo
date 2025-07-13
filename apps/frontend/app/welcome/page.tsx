@@ -4,10 +4,6 @@ import { ArrowUpDown } from "lucide-react";
 import Link from "next/link";
 
 export default function Welcome() {
-  const accounts = [
-    "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
-    "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-  ];
   return (
     <section className="flex flex-col items-center">
       <div className="max-w-3xl w-full">
@@ -29,7 +25,7 @@ export default function Welcome() {
             </button>
           </div>
           <div>
-            <AccountList accounts={accounts} />
+            <AccountList />
           </div>
         </div>
       </div>
