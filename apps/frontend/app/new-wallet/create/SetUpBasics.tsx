@@ -23,7 +23,6 @@ export default function SetUpBasics({
       value: chain.id,
     })),
   ];
-  console.log(chainOptions);
   return (
     <div>
       <div className="flex items-center gap-4 border-b border-border p-4">
@@ -48,9 +47,9 @@ export default function SetUpBasics({
         />
         <ChainSelect
           label="Network you want to deploy"
-          value={Number(formData.chain)}
+          value={Number(formData.chainId)}
           onChange={(val) => {
-            setFormData({ ...formData, chain: val });
+            setFormData({ ...formData, chainId: val });
           }}
           options={chainOptions}
         />

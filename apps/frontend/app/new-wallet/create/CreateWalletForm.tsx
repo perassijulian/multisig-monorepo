@@ -6,10 +6,11 @@ import Button from "@/components/UI/Button";
 import SetSigners from "./SetSigners";
 import Review from "./Review";
 import { useAccount } from "wagmi";
+import { createMultisigFlow } from "@/lib/flows/createMultisic";
 
 export type FormDataType = {
   name: string;
-  chain: number;
+  chainId: number;
   signers: string[];
   threshold: number;
 };
@@ -19,7 +20,7 @@ export default function CreateWalletForm() {
 
   const emptyFormData = {
     name: "My new wallet",
-    chain: 0,
+    chainId: 0,
     signers: [address as `0x${string}`],
     threshold: 1,
   };
@@ -35,12 +36,12 @@ export default function CreateWalletForm() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (step < stepsComponents.length - 1) {
       next();
     } else {
-      console.log(formData);
+      const res = await createMultisigFlow(formData);
     }
   };
 
