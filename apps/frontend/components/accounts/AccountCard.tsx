@@ -2,13 +2,9 @@ import { shortenAddress } from "@/lib/utils";
 import { EllipsisVertical } from "lucide-react";
 
 export default function AccountCard({ account }: { account: any }) {
-  console.log(account);
-  const { name, contractAddr, id } = account;
+  const { name, contractAddr } = account;
   return (
-    <div
-      key={id}
-      className="flex items-center justify-between p-4 mt-2 border border-border rounded-xl bg-bgSubtle hover:bg-bgMoreSubtle transition-colors shadow-xl"
-    >
+    <div className="flex items-center justify-between p-4 mt-2 border border-border rounded-xl bg-bgSubtle hover:bg-bgMoreSubtle transition-colors shadow-xl">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-full" />
         <div>

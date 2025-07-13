@@ -1,14 +1,14 @@
 "use client";
 
 import Input from "@/components/UI/Input";
-import { FormDataType } from "./CreateWalletForm";
 import { useChains } from "wagmi";
 import { config } from "@/wagmiConfig";
 import ChainSelect from "@/components/UI/Select";
+import { CreateMultisigFormValues } from "@/types";
 
 interface SetUpBasicsType {
-  formData: FormDataType;
-  setFormData: (data: FormDataType) => void;
+  formData: CreateMultisigFormValues;
+  setFormData: (data: CreateMultisigFormValues) => void;
 }
 
 export default function SetUpBasics({

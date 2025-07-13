@@ -1,16 +1,15 @@
 "use client";
 
-import Input from "@/components/UI/Input";
-import { FormDataType } from "./CreateWalletForm";
 import { Fragment } from "react";
+import { CreateMultisigFormValues } from "@/types";
 
 interface ReviewType {
-  formData: FormDataType;
+  formData: CreateMultisigFormValues;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function Review({ formData, handleChange }: ReviewType) {
-  const { chain, name, signers, threshold } = formData;
+  const { chainId, name, signers, threshold } = formData;
   return (
     <div>
       <div className="flex items-center gap-4 border-b border-border p-4">
@@ -28,7 +27,7 @@ export default function Review({ formData, handleChange }: ReviewType) {
       <div className="py-4 px-14">
         <dl className="grid grid-cols-[120px_1fr] gap-y-4 gap-x-6 text-sm">
           <dt className="font-medium text-textMuted">Network</dt>
-          <dd className="text-text">{chain}</dd>
+          <dd className="text-text">{chainId}</dd>
           <dt className="font-medium text-textMuted">Name</dt>
           <dd className="text-text">{name}</dd>
           {signers.map((signer, i) => (

@@ -1,4 +1,4 @@
-import { getMultisigToAPI, postMultisigToAPI } from "../api/multisigs";
+import { getMultisigToAPI } from "../api/multisigs";
 
 type WalletType = `0x${string}`;
 

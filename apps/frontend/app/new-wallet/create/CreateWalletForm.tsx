@@ -7,13 +7,7 @@ import SetSigners from "./SetSigners";
 import Review from "./Review";
 import { useAccount } from "wagmi";
 import { createMultisigFlow } from "@/lib/flows/createMultisig";
-
-export type FormDataType = {
-  name: string;
-  chainId: number;
-  signers: string[];
-  threshold: number;
-};
+import { CreateMultisigFormValues } from "@/types";
 
 export default function CreateWalletForm() {
   const { address } = useAccount();
@@ -25,7 +19,8 @@ export default function CreateWalletForm() {
     threshold: 1,
   };
 
-  const [formData, setFormData] = useState<FormDataType>(emptyFormData);
+  const [formData, setFormData] =
+    useState<CreateMultisigFormValues>(emptyFormData);
   const [step, setStep] = useState<number>(0);
 
   const next = () => setStep(Math.min(step + 1, stepsComponents.length - 1));

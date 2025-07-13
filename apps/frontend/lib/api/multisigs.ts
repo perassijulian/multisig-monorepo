@@ -1,12 +1,6 @@
-import { FormDataType } from "@/app/new-wallet/create/CreateWalletForm";
+import { CreateMultisigPayload } from "@/types";
 
-//TODO create proper type
-type ExtendedProps = FormDataType & {
-  contractAddr: string;
-  creatorWallet: string;
-};
-
-export async function postMultisigToAPI(data: ExtendedProps) {
+export async function postMultisigToAPI(data: CreateMultisigPayload) {
   try {
     const res = await fetch("http://localhost:4000/multisigs", {
       method: "POST",

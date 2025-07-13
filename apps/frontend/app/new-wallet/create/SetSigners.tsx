@@ -1,12 +1,12 @@
 "use client";
 
 import Input from "@/components/UI/Input";
-import { FormDataType } from "./CreateWalletForm";
+import { CreateMultisigFormValues } from "@/types";
 import { Plus } from "lucide-react";
 
 interface SetSignersType {
-  formData: FormDataType;
-  setFormData: (data: FormDataType) => void;
+  formData: CreateMultisigFormValues;
+  setFormData: (data: CreateMultisigFormValues) => void;
 }
 
 export default function SetSigners({ formData, setFormData }: SetSignersType) {
@@ -14,12 +14,14 @@ export default function SetSigners({ formData, setFormData }: SetSignersType) {
 
   const handleSignerChange = (index: number, value: string) => {
     const updatedSigners = [...signers];
-    updatedSigners[index] = value;
+    // Ensure the value starts with '0x' to match the type '`0x${string}`'
+    const formattedValue = value.startsWith("0x") ? value : `0x${value}`;
+    updatedSigners[index] = formattedValue as `0x${string}`;
     setFormData({ ...formData, signers: updatedSigners });
   };
 
   const addSigner = () => {
-    setFormData({ ...formData, signers: [...signers, ""] });
+    setFormData({ ...formData, signers: [...signers, "0x"] });
   };
 
   const handleThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
