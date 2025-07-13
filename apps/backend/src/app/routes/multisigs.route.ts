@@ -9,6 +9,17 @@ import {
 
 const router = Router();
 
+/**
+ * GET /multisigs
+ *
+ * Query Parameters:
+ * - wallet: string (required) - Wallet address of the user
+ *
+ * Returns:
+ * - 200: List of multisigs created by the specified wallet
+ * - 400: If wallet query param is missing or invalid
+ * - 500: On internal server error
+ */
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   const parsedParams = GetMultisigsSchema.safeParse(req.query);
   if (!parsedParams.success || !parsedParams.data) {
@@ -25,6 +36,22 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+/**
+ * POST /multisigs
+ *
+ * Request Body:
+ * - name: string - Name of the multisig wallet
+ * - chainId: number - Chain/network ID where the wallet is deployed
+ * - creatorWallet: string - Address of the wallet creating the multisig
+ * - signers: string[] - List of signer addresses
+ * - threshold: number - Number of required signers to execute transactions
+ * - contractAddr: string - Deployed multisig contract address
+ *
+ * Returns:
+ * - 201: Multisig wallet successfully created
+ * - 400: Validation failed (e.g. missing fields, invalid address format)
+ * - 500: On internal server error
+ */
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   const parsedParams = CreateMultisigSchema.safeParse(req.body);
   if (!parsedParams.success || !parsedParams.data) {
