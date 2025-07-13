@@ -6,7 +6,7 @@ import Button from "@/components/UI/Button";
 import SetSigners from "./SetSigners";
 import Review from "./Review";
 import { useAccount } from "wagmi";
-import { createMultisigFlow } from "@/lib/flows/createMultisic";
+import { createMultisigFlow } from "@/lib/flows/createMultisig";
 
 export type FormDataType = {
   name: string;
