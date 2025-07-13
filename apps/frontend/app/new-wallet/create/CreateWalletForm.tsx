@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SetUpBasics from "./SetUpBasics";
 import Button from "@/components/UI/Button";
 import SetSigners from "./SetSigners";
@@ -8,19 +8,27 @@ import Review from "./Review";
 import { useAccount } from "wagmi";
 import { createMultisigFlow } from "@/lib/flows/createMultisig";
 import { CreateMultisigFormValues } from "@/types";
+import { useToast } from "@/components/context/ToastContext";
+import { useRouter } from "next/navigation";
 
 export default function CreateWalletForm() {
   const { address } = useAccount();
+  const { showToast } = useToast();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const emptyFormData = {
+  const getInitialFormData = (
+    address: `0x${string}` | undefined
+  ): CreateMultisigFormValues => ({
     name: "My new wallet",
     chainId: 0,
-    signers: [address as `0x${string}`],
+    signers: address ? [address] : [],
     threshold: 1,
-  };
+  });
 
-  const [formData, setFormData] =
-    useState<CreateMultisigFormValues>(emptyFormData);
+  const [formData, setFormData] = useState<CreateMultisigFormValues>(
+    getInitialFormData(address)
+  );
   const [step, setStep] = useState<number>(0);
 
   const next = () => setStep(Math.min(step + 1, stepsComponents.length - 1));
@@ -35,16 +43,34 @@ export default function CreateWalletForm() {
     e.preventDefault();
     if (step < stepsComponents.length - 1) {
       next();
-    } else {
-      const res = await createMultisigFlow(formData);
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // TODO add zod verification
+      await createMultisigFlow(formData);
+      showToast({ message: "Wallet deployed!", type: "success" });
+      router.push("/welcome");
+    } catch (error) {
+      showToast({
+        message: "Something went wrong. Please try again",
+        type: "error",
+      });
+      console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const stepsComponents = [
-    <SetUpBasics formData={formData} setFormData={setFormData} />,
-    <SetSigners formData={formData} setFormData={setFormData} />,
-    <Review formData={formData} handleChange={handleChange} />,
-  ];
+  const stepsComponents = useMemo(
+    () => [
+      <SetUpBasics formData={formData} setFormData={setFormData} />,
+      <SetSigners formData={formData} setFormData={setFormData} />,
+      <Review formData={formData} handleChange={handleChange} />,
+    ],
+    [formData]
+  );
 
   return (
     <div className="bg-bgSubtle border border-border rounded shadow-xl">
@@ -59,8 +85,12 @@ export default function CreateWalletForm() {
           >
             Back
           </Button>
-          <Button type="submit" className="w-64">
-            {step < stepsComponents.length - 1 ? "Next" : "Create new wallet"}
+          <Button type="submit" className="w-64" disabled={isSubmitting}>
+            {isSubmitting
+              ? "Creating wallet.."
+              : step < stepsComponents.length - 1
+              ? "Next"
+              : "Create new wallet"}
           </Button>
         </div>
       </form>
