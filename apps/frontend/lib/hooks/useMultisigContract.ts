@@ -9,6 +9,7 @@ import {
 } from "../contracts/multisig.types";
 import { Abi } from "abitype";
 import { useMemo } from "react";
+import { useMultisigStore } from "@/stores/multisigStore";
 
 export function useReadMultisigContract<TFunctionName extends MultisigReadFn>({
   functionName,
@@ -25,19 +26,24 @@ export function useReadMultisigContract<TFunctionName extends MultisigReadFn>({
   });
 }
 
-export function useWriteMultisigContract<
-  TFunctionName extends MultisigWriteFn
->() {
+export function useWriteMultisigContract<T extends MultisigWriteFn>() {
   const { writeContractAsync } = useWriteContract();
+  const multisigAddress = useMultisigStore((state) => state.address);
 
-  return (functionName: TFunctionName, args: ArgsForWrite<TFunctionName>) => {
+  const write = async (fn: T, args: ArgsForWrite<T>) => {
+    if (!multisigAddress) {
+      throw new Error("No multisig address set");
+    }
+
     return writeContractAsync({
       abi: MULTISIG_TYPED_ABI as Abi,
-      address: MULTISIG_ADDRESS,
-      functionName,
+      address: multisigAddress as `0x${string}`,
+      functionName: fn,
       args,
     });
   };
+
+  return write;
 }
 
 export function useMultisigTransactions(transactionCount: number) {

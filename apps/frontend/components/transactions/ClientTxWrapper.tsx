@@ -7,7 +7,7 @@ import TransactionList from "./TransactionList";
 import { useRouter, useSearchParams } from "next/navigation";
 import { parseSafeParam } from "@/lib/utils/parseSafeParam";
 import { useToast } from "../context/ToastContext";
-import { useMultisig, useSetMultisig } from "../context/MultisigContext";
+import { useMultisigStore } from "@/stores/multisigStore";
 
 // we make this component so we don't make the whole /assets CSR
 export default function ClientTxWrapper() {
@@ -15,9 +15,7 @@ export default function ClientTxWrapper() {
   const searchParams = useSearchParams();
   const { showToast } = useToast();
   const router = useRouter();
-  const setMultisigData = useSetMultisig();
-  const multisig = useMultisig();
-  console.log("multisig context:", multisig);
+  const { chain, address, setMultisigData } = useMultisigStore();
   useEffect(() => {
     const safeParam = searchParams.get("wallet");
     const parsed = parseSafeParam(safeParam);
@@ -26,9 +24,7 @@ export default function ClientTxWrapper() {
       // TODO make a that wallet is not available page or component
       //setTimeout(() => router.push("/welcome"), 3000);
     } else {
-      if (setMultisigData) {
-        setMultisigData(parsed);
-      }
+      setMultisigData(parsed.chain, parsed.address);
     }
   }, [searchParams, router]);
 
