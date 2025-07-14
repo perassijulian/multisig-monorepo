@@ -1,5 +1,4 @@
 import { useReadContract, useReadContracts, useWriteContract } from "wagmi";
-import { MULTISIG_ADDRESS } from "../contracts/multisig";
 import {
   ArgsForWrite,
   ArgsForRead,
@@ -11,6 +10,21 @@ import { Abi } from "abitype";
 import { useMemo } from "react";
 import { useMultisigStore } from "@/stores/multisigStore";
 
+/**
+ * Hook to read data from the currently selected Multisig contract.
+ *
+ * @template T - A valid read function name from the Multisig ABI.
+ * @param {Object} params
+ * @param {T} params.functionName - The name of the read function to call.
+ * @param {ArgsForRead<T>} [params.args] - Optional arguments for the function.
+ *
+ * @returns {ReturnType<typeof useReadContract>} Wagmi read query result.
+ *
+ * @example
+ * const { data, isLoading } = useReadMultisigContract({
+ *   functionName: "getOwners"
+ * });
+ */
 export function useReadMultisigContract<TFunctionName extends MultisigReadFn>({
   functionName,
   args,
@@ -28,6 +42,26 @@ export function useReadMultisigContract<TFunctionName extends MultisigReadFn>({
   });
 }
 
+/**
+ * Hook to write to the currently selected Multisig contract.
+ *
+ * Will throw an error if the Multisig address is not set.
+ * Wraps `writeContractAsync` with ABI, address, and types preconfigured.
+ *
+ * @template T - A valid write function name from the Multisig ABI.
+ *
+ * @returns {(fn: T, args: ArgsForWrite<T>) => Promise<ReturnType<typeof writeContractAsync>>}
+ * Async write function for the Multisig contract.
+ *
+ * @example
+ * const write = useWriteMultisigContract();
+ *
+ * await write("submitTransaction", [
+ *   "0xRecipientAddress",
+ *   BigInt(1000),
+ *   "0x"
+ * ]);
+ */
 export function useWriteMultisigContract<T extends MultisigWriteFn>() {
   const { writeContractAsync } = useWriteContract();
   const multisigAddress = useMultisigStore((state) => state.address);
@@ -48,6 +82,19 @@ export function useWriteMultisigContract<T extends MultisigWriteFn>() {
   return write;
 }
 
+/**
+ * Hook to fetch all transactions from the current Multisig contract.
+ *
+ * Uses a batched `useReadContracts` call with `getTransaction(i)` for each index.
+ *
+ * @param {number} transactionCount - Total number of transactions to fetch.
+ * @returns {ReturnType<typeof useReadContracts>} Wagmi multicall query result.
+ *
+ * @example
+ * const { data, isLoading } = useMultisigTransactions(5);
+ *
+ * data?.[0]?.result?.to; // Access the first transaction's 'to' field
+ */
 export function useMultisigTransactions(transactionCount: number) {
   const multisigAddress = useMultisigStore((state) => state.address);
 
