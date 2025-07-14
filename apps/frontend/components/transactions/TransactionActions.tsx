@@ -7,6 +7,8 @@ import {
 import { cn } from "@/lib/utils";
 import { Check, X } from "lucide-react";
 import { useAccount } from "wagmi";
+import { useToast } from "../context/ToastContext";
+import Skeleton from "../UI/Skeleton";
 
 export default function TransactionActions({
   txIndex,
@@ -17,6 +19,7 @@ export default function TransactionActions({
 }) {
   const handleWriteToContract = useWriteMultisigContract();
   const { address } = useAccount();
+  const { showToast } = useToast();
 
   const { data: isConfirmed, isLoading } = useReadMultisigContract({
     functionName: "isConfirmed",
@@ -25,8 +28,7 @@ export default function TransactionActions({
 
   const handleConfirm = async () => {
     if (isConfirmed) {
-      // TODO: add toast
-      console.log("You already confirmed this tx");
+      showToast({ message: "You already confirmed this tx", type: "error" });
       return;
     }
 
@@ -34,7 +36,7 @@ export default function TransactionActions({
       const tx = await handleWriteToContract("confirmTransaction", [
         BigInt(txIndex),
       ]);
-      console.log(tx);
+      showToast({ message: "You successfully voted!" });
     } catch (error) {
       console.log(error);
     }
@@ -50,22 +52,18 @@ export default function TransactionActions({
       console.log(error);
     }
   };
-
-  return (
+  return isLoading ? (
+    <Skeleton />
+  ) : (
     <div className="flex gap-2 items-center justify-center">
-      {/** TODO add skeleton */}
-      {isLoading ? (
-        <div>loading</div>
-      ) : (
-        <Check
-          onClick={handleConfirm}
-          className={cn(
-            isConfirmed || executed
-              ? "text-green-900"
-              : "cursor-pointer text-green-500 transition-all duration-150 ease-in-out hover:text-green-400 hover:drop-shadow-glowGreen hover:scale-110"
-          )}
-        />
-      )}
+      <Check
+        onClick={handleConfirm}
+        className={cn(
+          isConfirmed || executed
+            ? "text-green-900"
+            : "cursor-pointer text-green-500 transition-all duration-150 ease-in-out hover:text-green-400 hover:drop-shadow-glowGreen hover:scale-110"
+        )}
+      />
       <X
         onClick={handleRevoke}
         className={cn(
