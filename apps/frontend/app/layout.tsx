@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Navbar from "@/components/layout/Navbar";
 import ModalProvider from "@/components/context/ModalContext";
 import ToastProvider from "@/components/context/ToastContext";
+import { MultisigProvider } from "@/components/context/MultisigContext";
 
 const queryClient = new QueryClient();
 export default function RootLayout({
@@ -21,8 +22,10 @@ export default function RootLayout({
           <QueryClientProvider client={queryClient}>
             <ToastProvider>
               <ModalProvider>
-                <Navbar />
-                {children}
+                <MultisigProvider>
+                  <Navbar />
+                  {children}
+                </MultisigProvider>
               </ModalProvider>
             </ToastProvider>
           </QueryClientProvider>

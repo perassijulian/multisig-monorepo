@@ -1,5 +1,6 @@
 "use client";
 
+import { MultisigProvider } from "@/components/context/MultisigContext";
 import AppShell from "@/components/layout/AppShell";
 
 export default function ProtectedLayout({
@@ -7,5 +8,9 @@ export default function ProtectedLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <AppShell>{children}</AppShell>;
+  return (
+    <MultisigProvider>
+      <AppShell>{children}</AppShell>
+    </MultisigProvider>
+  );
 }
