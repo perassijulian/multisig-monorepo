@@ -18,9 +18,11 @@ export function useReadMultisigContract<TFunctionName extends MultisigReadFn>({
   functionName: TFunctionName;
   args?: ArgsForRead<TFunctionName>;
 }) {
+  const multisigAddress = useMultisigStore((state) => state.address);
+
   return useReadContract({
     abi: MULTISIG_TYPED_ABI as Abi,
-    address: MULTISIG_ADDRESS,
+    address: multisigAddress as `0x${string}` | undefined,
     functionName,
     args,
   });
@@ -47,9 +49,13 @@ export function useWriteMultisigContract<T extends MultisigWriteFn>() {
 }
 
 export function useMultisigTransactions(transactionCount: number) {
+  const multisigAddress = useMultisigStore((state) => state.address);
+
   const contracts = useMemo(() => {
+    if (!multisigAddress) return [];
+
     return Array.from({ length: transactionCount }, (_, i) => ({
-      address: MULTISIG_ADDRESS as `0x${string}`,
+      address: multisigAddress as `0x${string}`,
       abi: MULTISIG_TYPED_ABI,
       functionName: "getTransaction",
       args: [BigInt(i)],
