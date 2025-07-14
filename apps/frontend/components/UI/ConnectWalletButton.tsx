@@ -25,7 +25,7 @@ export default function ConnectWalletButton() {
   useEffect(() => {
     if (isConnected) {
       Cookies.set("walletConnected", "true", { path: "/" });
-      router.push("/welcome");
+      //router.push("/welcome");
     } else {
       Cookies.remove("walletConnected");
     }
