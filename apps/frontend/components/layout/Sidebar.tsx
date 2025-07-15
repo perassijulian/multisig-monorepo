@@ -9,27 +9,41 @@ import {
 } from "lucide-react";
 import Button from "../UI/Button";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useConfig } from "wagmi";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const config = useConfig();
+
+  const searchParams = useSearchParams();
+  const walletParam = searchParams.get("wallet");
+  const safeQuery = walletParam ? `?wallet=${walletParam}` : "";
+
   const onClick = () => {
+    // TODO define action
     console.log("holi");
   };
 
   const navigationItems = [
-    { icon: <Home />, text: "Home", href: "/home" },
-    { icon: <ChartCandlestick />, text: "Assets", href: "/assets" },
-    { icon: <ArrowUpDown />, text: "Transations", href: "/transactions" },
-    { icon: <BookOpenText />, text: "Address book", href: "/address-book" },
-    { icon: <Settings />, text: "Settings", href: "/settings" },
+    { icon: <Home />, text: "Home", href: `/home${safeQuery}` },
+    { icon: <ChartCandlestick />, text: "Assets", href: `/assets${safeQuery}` },
+    {
+      icon: <ArrowUpDown />,
+      text: "Transations",
+      href: `/transactions${safeQuery}`,
+    },
+    {
+      icon: <BookOpenText />,
+      text: "Address book",
+      href: `/address-book${safeQuery}`,
+    },
+    { icon: <Settings />, text: "Settings", href: `/settings${safeQuery}` },
   ];
 
   return (
-    <nav className="bg-bgSubtle space-y-2 h-screen w-64 border-r border-border">
+    <nav className="bg-bgSubtle space-y-2 h-screen w-64 shrink-0 border-r border-border">
       <div className="bg-secondary w-full flex justify-center text-sm">
         {config.chains[0].name ?? "Not detected"}
       </div>
