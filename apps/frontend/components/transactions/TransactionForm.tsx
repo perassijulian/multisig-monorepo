@@ -7,18 +7,19 @@ import { useWriteMultisigContract } from "@/lib/hooks/useMultisigContract";
 import { useToast } from "../context/ToastContext";
 import Input from "../UI/Input";
 
+const EMPTY_FORM_DATA: TransactionFormValues = {
+  to: "",
+  value: "",
+  data: "",
+};
+
 export default function TransactionForm({
   setTriggerRefetchTxs,
 }: {
   setTriggerRefetchTxs: React.Dispatch<SetStateAction<boolean>>;
 }) {
-  const emptyFormData = {
-    to: "",
-    value: "",
-    data: "",
-  };
   const [formData, setFormData] =
-    useState<TransactionFormValues>(emptyFormData);
+    useState<TransactionFormValues>(EMPTY_FORM_DATA);
   const { showToast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const submitTransaction = useWriteMultisigContract();
@@ -31,7 +32,25 @@ export default function TransactionForm({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const to = formData.to.startsWith("0x") ? formData.to : `0x${formData.to}`;
+    if (!/^0x[a-fA-F0-9]{40}$/.test(formData.to)) {
+      showToast({ message: "Invalid recipient address", type: "error" });
+      return;
+    }
+    const { to } = formData;
+
+    if (isNaN(Number(formData.value))) {
+      showToast({ message: "Invalid ETH value", type: "error" });
+      return;
+    }
+
+    let value: bigint;
+    try {
+      value = BigInt(formData.value);
+    } catch {
+      showToast({ message: "Invalid value format", type: "error" });
+      return;
+    }
+
     const data = formData.data.startsWith("0x")
       ? formData.data
       : `0x${formData.data}`;
@@ -40,13 +59,13 @@ export default function TransactionForm({
       setIsSubmitting(true);
       await submitTransaction("submitTransaction", [
         to as `0x${string}`,
-        BigInt(formData.value),
+        value,
         data as `0x${string}`,
       ]);
 
       setTriggerRefetchTxs(true);
       showToast({ message: "Proposal successfully made!", type: "success" });
-      setFormData(emptyFormData);
+      setFormData(EMPTY_FORM_DATA);
     } catch (err) {
       showToast({
         message: "Transaction failed. Please try again",
@@ -72,6 +91,7 @@ export default function TransactionForm({
         <Input
           label="Value"
           name="value"
+          type="number"
           value={formData.value}
           onChange={handleChange}
           required
