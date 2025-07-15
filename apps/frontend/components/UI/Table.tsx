@@ -1,9 +1,15 @@
+import Skeleton from "./Skeleton";
+
 export default function Table({
   head,
   body,
+  isLoading = false,
+  skeletonRows = 3,
 }: {
   head: React.ReactNode[];
-  body: React.ReactNode[][] | React.ReactNode;
+  body?: React.ReactNode[][] | React.ReactNode;
+  isLoading?: boolean;
+  skeletonRows?: number;
 }) {
   return (
     <div className="overflow-x-auto rounded border border-border shadow-xl">
@@ -18,19 +24,35 @@ export default function Table({
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
-          {Array.isArray(body) ? (
-            body.map((row, j) => (
-              <tr key={j} className="hover:opacity-70">
-                {row.map((item, i) => (
-                  <td key={i} className="py-2 px-4 text-gray-500">
-                    {item}
-                  </td>
-                ))}
+          {isLoading ? (
+            Array.from({ length: skeletonRows }).map((_, i) => (
+              <tr key={`skeleton-${i}`}>
+                <td colSpan={head.length} className="py-4 px-4">
+                  <Skeleton />
+                </td>
               </tr>
             ))
+          ) : Array.isArray(body) ? (
+            body.map((row, j) =>
+              Array.isArray(row) ? (
+                <tr key={j} className="hover:opacity-70">
+                  {row.map((item, i) => (
+                    <td key={i} className="py-2 px-4 text-gray-500">
+                      {item}
+                    </td>
+                  ))}
+                </tr>
+              ) : (
+                <tr key={j}>
+                  <td colSpan={head.length} className="py-4 px-4 text-center">
+                    {row}
+                  </td>
+                </tr>
+              )
+            )
           ) : (
             <tr>
-              <td colSpan={head.length} className="py-4 px-4">
+              <td colSpan={head.length} className="py-4 px-4 text-center">
                 {body}
               </td>
             </tr>
