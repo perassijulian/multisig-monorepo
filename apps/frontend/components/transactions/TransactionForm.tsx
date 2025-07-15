@@ -38,6 +38,8 @@ export default function TransactionForm({
       ]);
       setTriggerRefetchTxs(true);
       console.log("tx processed: ", tx);
+
+      // TODO: restart the form
     } catch (err) {
       console.error("Transaction failed", err);
     }

@@ -73,7 +73,7 @@ export default function CreateWalletForm() {
       console.log("res ", res);
       if (res && res.id) {
         showToast({ message: "Wallet deployed!", type: "success" });
-        router.push("/welcome");
+        router.push(`/home?wallet=eth:${contractAddr}`);
       } else {
         throw new Error("Failed to store multisig in backend");
       }
