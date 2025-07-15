@@ -5,12 +5,20 @@ import {
   useReadMultisigContract,
 } from "@/lib/hooks/useMultisigContract";
 import Table from "../UI/Table";
-import { SetStateAction, useEffect } from "react";
+import { SetStateAction, useEffect, useMemo } from "react";
 import { parseTransactionRows } from "@/lib/tx/parsers";
-import Skeleton from "../UI/Skeleton";
 import { useToast } from "../context/ToastContext";
 
 type TxRow = [string, number, string, React.ReactNode, number, React.ReactNode];
+
+const TABLE_HEAD = [
+  "Recipient",
+  "Value",
+  "Data",
+  "Executed",
+  "Votes",
+  "Actions",
+];
 
 export default function TransactionList({
   triggerRefetchTxs,
@@ -19,6 +27,7 @@ export default function TransactionList({
   triggerRefetchTxs: boolean;
   setTriggerRefetchTxs: React.Dispatch<SetStateAction<boolean>>;
 }) {
+  const fallbackRow: TxRow = ["-", 0, "-", "No transactions found", 0, ""];
   const { showToast } = useToast();
   const {
     data: countData,
@@ -45,44 +54,28 @@ export default function TransactionList({
       refetch();
       setTriggerRefetchTxs(false);
     }
-  }, [triggerRefetchTxs]);
+  }, [triggerRefetchTxs, refetchCount, refetch, setTriggerRefetchTxs]);
 
-  // TODO add skeleton
-  if (isLoading)
+  if (isLoading) return <Table head={TABLE_HEAD} isLoading />;
+
+  if (errorTxCount || errorContracts) {
+    showToast({
+      message: "Something went wrong. Please refresh the page.",
+      type: "error",
+    });
+    console.error(errorTxCount || errorContracts);
     return (
       <Table
-        head={["Recipient", "Value", "Data", "Executed", "Votes", "Actions"]}
-        body={[
-          [<Skeleton height="h-6" width="w-full" />],
-          [<Skeleton height="h-6" width="w-full" />],
-        ]}
+        head={TABLE_HEAD}
+        body={[["Error loading transactions", "", "", "", "", ""]]}
       />
     );
-
-  if (errorTxCount) {
-    showToast({
-      message: "Something happened. Reload the page",
-      type: "error",
-    });
-    console.error(errorTxCount.message);
-    return;
-  }
-  if (errorContracts) {
-    showToast({
-      message: "Something happened. Reload the page",
-      type: "error",
-    });
-    console.error(errorContracts.message);
-    return;
   }
 
-  const body: TxRow[] | string =
-    data === undefined ? "No data" : parseTransactionRows(data);
+  const body = useMemo(() => {
+    if (!Array.isArray(data) || data.length === 0) return [];
+    return parseTransactionRows(data);
+  }, [data]);
 
-  return (
-    <Table
-      head={["Recipient", "Value", "Data", "Executed", "Votes", "Actions"]}
-      body={body}
-    />
-  );
+  return <Table head={TABLE_HEAD} body={body} />;
 }
