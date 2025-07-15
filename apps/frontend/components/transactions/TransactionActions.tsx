@@ -37,6 +37,7 @@ export default function TransactionActions({
         BigInt(txIndex),
       ]);
       showToast({ message: "You successfully voted!" });
+      // TODO trigger refetching the vote counter
     } catch (error) {
       console.log(error);
     }

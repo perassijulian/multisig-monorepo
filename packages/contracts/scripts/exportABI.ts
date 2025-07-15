@@ -1,6 +1,8 @@
 import fs from "fs";
-import path from "path";
 
+/**
+ * Exports ABI, bytecode and address of a contract to be used in frontend.
+ */
 export function exportContractToFrontend({
   name,
   address,
@@ -16,7 +18,10 @@ export function exportContractToFrontend({
 
   const output = `
     // THIS FILE IS AUTO-GENERATED DURING DEPLOYMENT
+
     export const ${name.toUpperCase()}_ADDRESS = "${address}";
+
+    export const ${name.toUpperCase()}_BYTECODE = "${artifact.bytecode}";
 
     export const ${name.toUpperCase()}_ABI = ${JSON.stringify(
     artifact.abi,

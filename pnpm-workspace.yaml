@@ -3,8 +3,13 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
+  - '@prisma/client'
+  - '@prisma/engines'
   - '@tailwindcss/oxide'
+  - bufferutil
   - keccak
+  - prisma
   - secp256k1
   - sharp
   - unrs-resolver
+  - utf-8-validate

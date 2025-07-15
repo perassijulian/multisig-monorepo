@@ -1,7 +1,19 @@
+// NOT USING CURRENTLY
+
+"use client";
+
 import { CreateMultisigFormValues } from "@/types";
+import { useDeployContract } from "wagmi";
+import { MULTISIG_ABI, MULTISIG_BYTECODE } from "./multisig";
 
 export async function deployMultisigContract(
   formData: CreateMultisigFormValues
-): Promise<`0x${string}`> {
-  return "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+): Promise<ReturnType<typeof deployContract>> {
+  const { deployContract } = useDeployContract();
+  const { signers, threshold } = formData;
+  deployContract({
+    abi: MULTISIG_ABI,
+    args: [signers, BigInt(threshold)],
+    bytecode: MULTISIG_BYTECODE,
+  });
 }
