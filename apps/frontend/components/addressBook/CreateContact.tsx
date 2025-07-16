@@ -6,6 +6,7 @@ import Button from "../UI/Button";
 import { useToast } from "../context/ToastContext";
 import { useAccount } from "wagmi";
 import { postContactToAPI } from "@/lib/api/address-book";
+import { useContactsStore } from "@/stores/useMContactsStore";
 
 const EMPTY_FORMDATA: { name: string; address: `0x${string}` } = {
   name: "",
@@ -23,6 +24,7 @@ export default function CreateContact({
   }>(EMPTY_FORMDATA);
   const { showToast } = useToast();
   const { address: creator } = useAccount();
+  const { fetchContacts } = useContactsStore();
 
   const handleSubmit = async (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
@@ -42,6 +44,7 @@ export default function CreateContact({
           message: "Contact created!",
           type: "success",
         });
+        fetchContacts(creator);
         handleClose();
       }
     } catch (error) {

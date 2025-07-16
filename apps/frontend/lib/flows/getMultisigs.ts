@@ -1,3 +1,5 @@
+// TODO define if this is needed
+
 import { getMultisigToAPI } from "../api/multisigs";
 
 type WalletType = `0x${string}`;

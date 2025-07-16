@@ -22,13 +22,13 @@ export async function getContactsFromAPI({
 }) {
   try {
     const res = await fetch(
-      `http://localhost:4000/multisigs?wallet=${encodeURIComponent(wallet)}`,
+      `http://localhost:4000/address-book?wallet=${encodeURIComponent(wallet)}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       }
     );
-    if (!res.ok) throw new Error("Failed to get multisigs");
+    if (!res.ok) throw new Error("Failed to get contacts");
 
     return res.json();
   } catch (error) {
