@@ -5,7 +5,7 @@ import {
   useReadMultisigContract,
 } from "@/lib/hooks/useMultisigContract";
 import Table from "../UI/Table";
-import { SetStateAction, useEffect, useMemo } from "react";
+import { SetStateAction, useEffect } from "react";
 import { parseTransactionRows } from "@/lib/tx/parsers";
 import { useToast } from "../context/ToastContext";
 
@@ -27,7 +27,6 @@ export default function TransactionList({
   triggerRefetchTxs: boolean;
   setTriggerRefetchTxs: React.Dispatch<SetStateAction<boolean>>;
 }) {
-  const fallbackRow: TxRow = ["-", 0, "-", "No transactions found", 0, ""];
   const { showToast } = useToast();
   const {
     data: countData,
@@ -67,15 +66,15 @@ export default function TransactionList({
     return (
       <Table
         head={TABLE_HEAD}
-        body={[["Error loading transactions", "", "", "", "", ""]]}
+        errorMessage={"Something went wrong. Please refresh the page."} // We don't want to show the full error to client
       />
     );
   }
 
-  const body = useMemo(() => {
-    if (!Array.isArray(data) || data.length === 0) return [];
-    return parseTransactionRows(data);
-  }, [data]);
+  if (!data || !Array.isArray(data) || data.length === 0)
+    return <Table head={TABLE_HEAD} />;
+
+  const body: TxRow[] = parseTransactionRows(data);
 
   return <Table head={TABLE_HEAD} body={body} />;
 }

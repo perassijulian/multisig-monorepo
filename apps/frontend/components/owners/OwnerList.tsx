@@ -29,7 +29,7 @@ export default function OwnerList() {
   const owners = data as `0x${string}`[] | undefined;
 
   if (!Array.isArray(owners) || owners.length === 0 || error) {
-    return <Table head={TABLE_HEAD} body={[["", "No owners found"]]} />;
+    return <Table head={TABLE_HEAD} />;
   }
 
   const body = owners.map((address, i) => [i + 1, shortenAddress(address)]);
