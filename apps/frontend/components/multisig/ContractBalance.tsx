@@ -51,12 +51,15 @@ export default function ContractBalance() {
       </div>
       <Button
         onClick={() =>
-          openModal(
-            <AddFunds
-              setRefetchBalance={setRefetchBalance}
-              closeModal={closeModal}
-            />
-          )
+          openModal({
+            title: "Add funds",
+            content: (
+              <AddFunds
+                setRefetchBalance={setRefetchBalance}
+                closeModal={closeModal}
+              />
+            ),
+          })
         }
         className="w-32"
       >

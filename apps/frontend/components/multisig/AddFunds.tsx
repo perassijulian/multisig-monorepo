@@ -57,7 +57,6 @@ export default function AddFunds({
 
   return (
     <div>
-      <h2 className="text-xl">Add Funds</h2>
       <form onSubmit={handleSubmit}>
         <Input
           label="ETH amount"
@@ -67,7 +66,7 @@ export default function AddFunds({
           onChange={(e) => setValue(Number(e.target.value))}
         />
 
-        <Button disabled={isLoading} className="mt-4" type="submit">
+        <Button disabled={isLoading} className="mt-4 w-full" type="submit">
           {isLoading ? "loading.." : "Send"}
         </Button>
       </form>

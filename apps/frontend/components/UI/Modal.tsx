@@ -7,6 +7,7 @@ interface ModalProps {
   onClose: () => void;
   children: ReactNode;
   className?: string;
+  title?: string;
 }
 
 export default function Modal({
@@ -14,6 +15,7 @@ export default function Modal({
   onClose,
   children,
   className,
+  title = "",
 }: ModalProps) {
   useEffect(() => {
     const onEsc = (e: KeyboardEvent) => {
@@ -37,13 +39,17 @@ export default function Modal({
           className
         )}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-foreground hover:text-foreground-secondary transition"
-          aria-label="Close modal"
-        >
-          <X className="w-5 h-5" />
-        </button>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold text-text">{title}</h2>
+          <button
+            onClick={onClose}
+            className="text-foreground hover:text-foreground-secondary transition"
+            aria-label="Close modal"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
         {children}
       </div>
     </div>

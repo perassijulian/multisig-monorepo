@@ -1,6 +1,11 @@
+"use client";
+
 import { ArrowDownToLine, ArrowUpToLine, Search, UserPlus } from "lucide-react";
+import { useModal } from "../context/ModalContext";
+import CreateContact from "../addressBook/CreateContact";
 
 export default function AddressBookNavbar() {
+  const { openModal } = useModal();
   return (
     <nav className="h-32 w-full p-6 bg-bgSubtle border-b border-border">
       <h2 className="text-text text-2xl font-bold">Address books</h2>
@@ -22,8 +27,16 @@ export default function AddressBookNavbar() {
             <ArrowUpToLine size={20} />
             Export
           </button>
-          <button className="text-primary flex items-center justify-center gap-1 py-1 px-4 hover:bg-white/10 cursor-pointer rounded transition">
-            <UserPlus size={20} /> Create entry
+          <button
+            onClick={() =>
+              openModal({
+                title: "Create Contact",
+                content: <CreateContact />,
+              })
+            }
+            className="text-primary flex items-center justify-center gap-1 py-1 px-4 hover:bg-white/10 cursor-pointer rounded transition"
+          >
+            <UserPlus size={20} /> Create contact
           </button>
         </div>
       </div>
