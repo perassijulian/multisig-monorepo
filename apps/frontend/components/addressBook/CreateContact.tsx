@@ -4,11 +4,20 @@ import { useState } from "react";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
 
-export default function CreateContact() {
+const EMPTY_FORMDATA: { name: string; contact: `0x${string}` } = {
+  name: "",
+  contact: "0x" as `0x${string}`,
+};
+
+export default function CreateContact({
+  closeModal,
+}: {
+  closeModal: () => void;
+}) {
   const [formData, setFormData] = useState<{
     name: string;
     contact: `0x${string}`;
-  }>({ name: "", contact: "0x" });
+  }>(EMPTY_FORMDATA);
 
   const handleSubmit = (e: React.FormEvent<HTMLElement>) => {
     e.preventDefault();
@@ -36,7 +45,14 @@ export default function CreateContact() {
           }
         />
         <div className="flex items-center justify-between mt-6">
-          <Button className="w-32" variant="secondary">
+          <Button
+            onClick={() => {
+              setFormData(EMPTY_FORMDATA);
+              closeModal();
+            }}
+            className="w-32"
+            variant="secondary"
+          >
             Cancel
           </Button>
           <Button className="w-32" type="submit">
