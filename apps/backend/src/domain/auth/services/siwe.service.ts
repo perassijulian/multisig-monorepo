@@ -1,12 +1,19 @@
 import { generateNonce, SiweMessage } from "siwe";
 import { Request } from "express";
 
+/**
+ * Generates a new SIWE nonce and stores it in the session.
+ */
 export function createSiweNonce(req: Request): string {
   const nonce = generateNonce();
   req.session.nonce = nonce;
   return nonce;
 }
 
+/**
+ * Verifies the SIWE login and sets the authenticated message in session.
+ * Throws if message or signature is invalid.
+ */
 export async function verifySiweLogin(req: Request): Promise<void> {
   const { message: rawMessage, signature } = req.body;
 
