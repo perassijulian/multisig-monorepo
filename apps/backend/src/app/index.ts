@@ -12,7 +12,6 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Routes
-app.use("/", routes);
 app.use("/api", routes);
 
 // Health check
