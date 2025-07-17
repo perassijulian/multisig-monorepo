@@ -8,6 +8,6 @@ const router = Router();
 
 router.use("/multisigs", multisigRoutes);
 router.use("/address-book", addressBookRoutes);
-router.use("/siwe", siweRoutes);
+router.use("/auth", siweRoutes);
 
 export default router;
