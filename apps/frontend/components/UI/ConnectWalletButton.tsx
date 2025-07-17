@@ -10,7 +10,7 @@ import {
 } from "wagmi";
 import { metaMask } from "wagmi/connectors";
 import Blokies from "react-blockies";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Skeleton from "./Skeleton";
@@ -23,6 +23,7 @@ export default function ConnectWalletButton() {
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const router = useRouter();
+  const isSigningIn = useRef<boolean>(false);
 
   useEffect(() => {
     if (!isMounted) setIsMounted(true);
@@ -39,6 +40,9 @@ export default function ConnectWalletButton() {
 
   useAccountEffect({
     async onConnect({ address, chainId }) {
+      if (isSigningIn.current) return;
+      isSigningIn.current = true;
+
       try {
         const simpleSignMessage = (msg: string) =>
           signMessageAsync({ message: msg });

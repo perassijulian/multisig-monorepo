@@ -2,7 +2,7 @@ import { CreateContactFormValues } from "@/types";
 
 export async function postContactToAPI(data: CreateContactFormValues) {
   try {
-    const res = await fetch("http://localhost:4000/address-book", {
+    const res = await fetch("http://localhost:4000/api/address-book", {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
@@ -22,7 +22,9 @@ export async function getContactsFromAPI({
 }) {
   try {
     const res = await fetch(
-      `http://localhost:4000/address-book?wallet=${encodeURIComponent(wallet)}`,
+      `http://localhost:4000/api/address-book?wallet=${encodeURIComponent(
+        wallet
+      )}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },

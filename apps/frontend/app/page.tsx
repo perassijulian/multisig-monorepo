@@ -33,9 +33,6 @@ export default function Home() {
         <p className="text-[--color-text-muted] max-w-xs">
           Connect your wallet to create or access your multisig account.
         </p>
-        <div className="pt-2">
-          <ConnectWalletButton />
-        </div>
       </div>
     </main>
   );
