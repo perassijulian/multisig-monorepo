@@ -1,12 +1,13 @@
 "use client";
 
 import { shortenAddress } from "@/lib/utils";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import { useAccount, useAccountEffect, useConnect, useDisconnect } from "wagmi";
 import { metaMask } from "wagmi/connectors";
 import Blokies from "react-blockies";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import Skeleton from "./Skeleton";
 
 export default function ConnectWalletButton() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -25,15 +26,21 @@ export default function ConnectWalletButton() {
   useEffect(() => {
     if (isConnected) {
       Cookies.set("walletConnected", "true", { path: "/" });
-      //router.push("/welcome");
     } else {
       Cookies.remove("walletConnected");
     }
   }, [isConnected, router]);
 
-  if (!isMounted)
-    // TODO use skeleton
-    return <div className="w-[150px] h-10 bg-bg animate-pulse rounded-md" />;
+  useAccountEffect({
+    onConnect() {
+      router.push("/welcome");
+    },
+    onDisconnect() {
+      router.push("/");
+    },
+  });
+
+  if (!isMounted) return <Skeleton className="w-36 h-8" />;
 
   return (
     <div>
