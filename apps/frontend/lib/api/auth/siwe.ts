@@ -6,7 +6,9 @@ export async function signInWithEthereum(
   signMessage: (msg: string) => Promise<string>
 ) {
   // 1. Get nonce
-  const nonceRes = await fetch("/api/auth/nonce");
+  const nonceRes = await fetch("http://localhost:4000/api/auth/nonce", {
+    credentials: "include",
+  });
   const nonce = await nonceRes.text();
 
   // 2. Create siwe message
@@ -26,7 +28,7 @@ export async function signInWithEthereum(
   const signature = await signMessage(messageToSign);
 
   // 4. Send login request
-  const loginRes = await fetch("/api/auth/login", {
+  const loginRes = await fetch("http://localhost:4000/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message: messageToSign, signature }),
