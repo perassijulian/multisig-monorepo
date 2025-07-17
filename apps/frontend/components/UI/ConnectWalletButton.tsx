@@ -1,25 +1,31 @@
 "use client";
 
 import { shortenAddress } from "@/lib/utils";
-import { useAccount, useAccountEffect, useConnect, useDisconnect } from "wagmi";
+import {
+  useAccount,
+  useAccountEffect,
+  useConnect,
+  useDisconnect,
+  useSignMessage,
+} from "wagmi";
 import { metaMask } from "wagmi/connectors";
 import Blokies from "react-blockies";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Skeleton from "./Skeleton";
+import { signInWithEthereum } from "@/lib/api/auth/siwe";
 
 export default function ConnectWalletButton() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
   const { address, isConnected } = useAccount();
+  const { signMessageAsync } = useSignMessage();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isMounted) {
-      setIsMounted(true);
-    }
+    if (!isMounted) setIsMounted(true);
   }, []);
 
   // TODO until we do the full backend verification
@@ -32,8 +38,15 @@ export default function ConnectWalletButton() {
   }, [isConnected, router]);
 
   useAccountEffect({
-    onConnect() {
-      router.push("/welcome");
+    async onConnect({ address, chainId }) {
+      try {
+        const simpleSignMessage = (msg: string) =>
+          signMessageAsync({ message: msg });
+        await signInWithEthereum(address, chainId, simpleSignMessage);
+        router.push("/welcome");
+      } catch (error) {
+        console.error(error);
+      }
     },
     onDisconnect() {
       router.push("/");
