@@ -11,7 +11,6 @@ import {
 import { metaMask } from "wagmi/connectors";
 import Blokies from "react-blockies";
 import { useEffect, useRef, useState } from "react";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Skeleton from "./Skeleton";
 import { signInWithEthereum } from "@/lib/api/auth/siwe";

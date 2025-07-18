@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { getMultisigsFromUser } from "@/lib/flows/getMultisigs";
 import { useToast } from "../context/ToastContext";
 import { Multisig } from "@/types";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAccount } from "wagmi";
 
 export default function AccountList() {
-  const { address } = useAuthStore();
+  const { address } = useAccount();
   const { showToast } = useToast();
   const [accounts, setAccounts] = useState<Multisig[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);

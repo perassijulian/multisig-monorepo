@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Check, X } from "lucide-react";
 import { useToast } from "../context/ToastContext";
 import Skeleton from "../UI/Skeleton";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAccount } from "wagmi";
 
 export default function TransactionActions({
   txIndex,
@@ -18,7 +18,7 @@ export default function TransactionActions({
   executed: boolean;
 }) {
   const handleWriteToContract = useWriteMultisigContract();
-  const { address } = useAuthStore();
+  const { address } = useAccount();
   const { showToast } = useToast();
 
   const { data: isConfirmed, isLoading } = useReadMultisigContract({

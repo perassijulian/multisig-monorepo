@@ -5,13 +5,13 @@ import Table from "../UI/Table";
 import { useToast } from "../context/ToastContext";
 import ContactActions from "./ContactActions";
 import { useContactsStore } from "@/stores/useContactsStore";
-import { useAuthStore } from "@/stores/useAuthStore";
+import { useAccount } from "wagmi";
 
 const TABLE_HEAD = ["Name", "Address", ""];
 
 export default function ContactsList() {
   const { contacts, fetchContacts, isLoading, error } = useContactsStore();
-  const { address: wallet } = useAuthStore();
+  const { address: wallet } = useAccount();
   const { showToast } = useToast();
 
   useEffect(() => {

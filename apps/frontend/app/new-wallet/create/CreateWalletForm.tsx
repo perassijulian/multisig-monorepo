@@ -5,7 +5,7 @@ import SetUpBasics from "./SetUpBasics";
 import Button from "@/components/UI/Button";
 import SetSigners from "./SetSigners";
 import Review from "./Review";
-import { useDeployContract } from "wagmi";
+import { useAccount, useDeployContract } from "wagmi";
 import { CreateMultisigFormValues } from "@/types";
 import { useToast } from "@/components/context/ToastContext";
 import { useRouter } from "next/navigation";
@@ -13,10 +13,9 @@ import { MULTISIG_ABI, MULTISIG_BYTECODE } from "@/lib/contracts/multisig";
 import { postMultisigToAPI } from "@/lib/api/multisigs";
 import { waitForTransactionReceipt } from "@wagmi/core";
 import { config } from "@/wagmiConfig";
-import { useAuthStore } from "@/stores/useAuthStore";
 
 export default function CreateWalletForm() {
-  const { address } = useAuthStore();
+  const { address } = useAccount();
   const { showToast } = useToast();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
