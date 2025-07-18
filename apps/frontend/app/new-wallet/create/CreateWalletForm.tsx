@@ -63,7 +63,7 @@ export default function CreateWalletForm() {
       if (!contractAddr || contractAddr === undefined)
         throw new Error("No contract address returned");
 
-      if (address === undefined) throw new Error("No creator wallet detected");
+      if (!address) throw new Error("No creator wallet detected");
 
       const payload = {
         ...formData,
