@@ -39,4 +39,20 @@ export async function signInWithEthereum(
   return true;
 }
 
-export async function checkSession() {}
+export async function checkSession() {
+  try {
+    const res = await fetch("http://localhost:4000/api/auth/me", {
+      method: "GET",
+      credentials: "include",
+    });
+
+    if (!res.ok) {
+      return null;
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Failed to check session: ", error);
+    return;
+  }
+}

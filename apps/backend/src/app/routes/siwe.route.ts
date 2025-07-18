@@ -51,8 +51,10 @@ router.post(
   "/login",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
+      console.log("POST /login");
       await verifySiweLogin(req);
-      req.session.save(() => res.status(200).send(true));
+      await new Promise((resolve) => req.session.save(resolve));
+      return res.status(200).send(true);
     } catch (err) {
       req.session.siwe = undefined;
       req.session.nonce = undefined;
@@ -73,6 +75,7 @@ router.post(
  * - 500: On internal server error
  */
 router.get("/me", async (req: Request, res: Response, next: NextFunction) => {
+  console.log("GET /me");
   try {
     const siwe = req.session.siwe;
 
@@ -80,12 +83,10 @@ router.get("/me", async (req: Request, res: Response, next: NextFunction) => {
       return res.status(401).json({ message: "You must sign in first." });
     }
 
-    console.log("User is authenticated: ", siwe.address);
+    const { address, chainId } = siwe;
+    console.log("User is authenticated: ", address, " on chain ", chainId);
 
-    res
-      .type("text/plain")
-      .status(200)
-      .send(`You are authenticated. Wallet address: ${siwe.address}`);
+    res.status(200).json({ address, chainId, isAuthenticated: true });
   } catch (err) {
     next(err);
   }

@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import Skeleton from "./Skeleton";
 import { signInWithEthereum } from "@/lib/api/auth/siwe";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { checkAndSetSession } from "@/lib/flows/session";
 
 export default function ConnectWalletButton() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -30,14 +31,13 @@ export default function ConnectWalletButton() {
     if (!isMounted) setIsMounted(true);
   }, []);
 
-  // TODO until we do the full backend verification
   useEffect(() => {
     if (isConnected) {
-      Cookies.set("walletConnected", "true", { path: "/" });
+      checkAndSetSession();
     } else {
-      Cookies.remove("walletConnected");
+      useAuthStore.getState().reset();
     }
-  }, [isConnected, router]);
+  }, [isConnected]);
 
   useAccountEffect({
     async onConnect({ address, chainId }) {

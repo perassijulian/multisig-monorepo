@@ -31,6 +31,11 @@ app.use(
     },
   })
 );
+app.use((req, res, next) => {
+  console.log("SESSION ID:", req.sessionID);
+  console.log("SESSION OBJECT:", req.session);
+  next();
+});
 
 // Routes
 app.use("/api", routes);
