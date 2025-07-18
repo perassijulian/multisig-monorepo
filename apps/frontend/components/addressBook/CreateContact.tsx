@@ -6,7 +6,7 @@ import Button from "../UI/Button";
 import { useToast } from "../context/ToastContext";
 import { useAccount } from "wagmi";
 import { postContactToAPI } from "@/lib/api/address-book";
-import { useContactsStore } from "@/stores/useMContactsStore";
+import { useContactsStore } from "@/stores/useContactsStore";
 
 const EMPTY_FORMDATA: { name: string; address: `0x${string}` } = {
   name: "",

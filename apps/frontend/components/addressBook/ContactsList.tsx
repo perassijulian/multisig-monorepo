@@ -5,7 +5,7 @@ import Table from "../UI/Table";
 import { useAccount } from "wagmi";
 import { useToast } from "../context/ToastContext";
 import ContactActions from "./ContactActions";
-import { useContactsStore } from "@/stores/useMContactsStore";
+import { useContactsStore } from "@/stores/useContactsStore";
 
 const TABLE_HEAD = ["Name", "Address", ""];
 
