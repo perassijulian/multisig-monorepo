@@ -1,14 +1,14 @@
 "use client";
 
-import { useAccount } from "wagmi";
 import AccountCard from "./AccountCard";
 import { useEffect, useState } from "react";
 import { getMultisigsFromUser } from "@/lib/flows/getMultisigs";
 import { useToast } from "../context/ToastContext";
 import { Multisig } from "@/types";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export default function AccountList() {
-  const { address } = useAccount();
+  const { address } = useAuthStore();
   const { showToast } = useToast();
   const [accounts, setAccounts] = useState<Multisig[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);

@@ -4,9 +4,9 @@ import { useState } from "react";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
 import { useToast } from "../context/ToastContext";
-import { useAccount } from "wagmi";
 import { postContactToAPI } from "@/lib/api/address-book";
 import { useContactsStore } from "@/stores/useContactsStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const EMPTY_FORMDATA: { name: string; address: `0x${string}` } = {
   name: "",
@@ -23,7 +23,7 @@ export default function CreateContact({
     address: `0x${string}`;
   }>(EMPTY_FORMDATA);
   const { showToast } = useToast();
-  const { address: creator } = useAccount();
+  const { address: creator } = useAuthStore();
   const { fetchContacts } = useContactsStore();
 
   const handleSubmit = async (e: React.FormEvent<HTMLElement>) => {

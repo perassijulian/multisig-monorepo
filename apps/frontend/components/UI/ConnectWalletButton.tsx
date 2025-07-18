@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import Skeleton from "./Skeleton";
 import { signInWithEthereum } from "@/lib/api/auth/siwe";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 export default function ConnectWalletButton() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
@@ -47,6 +48,9 @@ export default function ConnectWalletButton() {
         const simpleSignMessage = (msg: string) =>
           signMessageAsync({ message: msg });
         await signInWithEthereum(address, chainId, simpleSignMessage);
+        useAuthStore
+          .getState()
+          .setSession({ address, chainId, isAuthenticated: true });
         router.push("/welcome");
       } catch (error) {
         console.error(error);

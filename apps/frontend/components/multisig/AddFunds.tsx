@@ -4,8 +4,8 @@ import { SetStateAction, useState } from "react";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
 import { sendFundsToContract } from "@/lib/tx/sendFundsToContract";
-import { useAccount } from "wagmi";
 import { useToast } from "../context/ToastContext";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 interface AddFundsProps {
   closeModal: () => void;
@@ -19,7 +19,7 @@ export default function AddFunds({
   const [value, setValue] = useState<number | "">("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { showToast } = useToast();
-  const { address } = useAccount();
+  const { address } = useAuthStore();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

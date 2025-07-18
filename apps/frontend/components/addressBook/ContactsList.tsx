@@ -2,16 +2,16 @@
 
 import { useEffect } from "react";
 import Table from "../UI/Table";
-import { useAccount } from "wagmi";
 import { useToast } from "../context/ToastContext";
 import ContactActions from "./ContactActions";
 import { useContactsStore } from "@/stores/useContactsStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const TABLE_HEAD = ["Name", "Address", ""];
 
 export default function ContactsList() {
   const { contacts, fetchContacts, isLoading, error } = useContactsStore();
-  const { address: wallet } = useAccount();
+  const { address: wallet } = useAuthStore();
   const { showToast } = useToast();
 
   useEffect(() => {
