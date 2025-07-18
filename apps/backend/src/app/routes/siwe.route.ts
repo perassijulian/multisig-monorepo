@@ -51,7 +51,6 @@ router.post(
   "/login",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log("POST /login");
       await verifySiweLogin(req);
       await new Promise((resolve) => req.session.save(resolve));
       return res.status(200).send(true);
@@ -75,10 +74,8 @@ router.post(
  * - 500: On internal server error
  */
 router.get("/me", async (req: Request, res: Response, next: NextFunction) => {
-  console.log("GET /me");
   try {
     const siwe = req.session.siwe;
-
     if (!siwe) {
       return res.status(401).json({ message: "You must sign in first." });
     }

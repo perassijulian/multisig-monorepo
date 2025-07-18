@@ -41,7 +41,8 @@ export default function ConnectWalletButton() {
 
   useAccountEffect({
     async onConnect({ address, chainId }) {
-      if (isSigningIn.current) return;
+      const { isAuthenticated } = useAuthStore.getState();
+      if (isSigningIn.current || isAuthenticated) return;
       isSigningIn.current = true;
 
       try {

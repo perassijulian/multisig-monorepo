@@ -32,6 +32,7 @@ export async function signInWithEthereum(
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ message: messageToSign, signature }),
+    credentials: "include",
   });
 
   if (!loginRes.ok) throw new Error("Login failed");
