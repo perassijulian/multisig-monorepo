@@ -1,8 +1,14 @@
 import { NextFunction, Request, Response, Router } from "express";
+import { z } from "zod";
 import {
   createSiweNonce,
   verifySiweLogin,
 } from "../../domain/auth/services/siwe.service";
+
+const siweLoginSchema = z.object({
+  message: z.string(),
+  signature: z.string(),
+});
 
 const router = Router();
 
@@ -45,11 +51,13 @@ router.get(
  * - 401: Invalid signature or nonce mismatch
  * - 500: On internal server error
  */
-
-//TODO add req.body verification
 router.post(
   "/login",
   async (req: Request, res: Response, next: NextFunction) => {
+    const result = siweLoginSchema.safeParse(req.body);
+    if (!result.success) {
+      return res.status(400).json({ error: "Invalid request body" });
+    }
     try {
       await verifySiweLogin(req);
       await new Promise((resolve) => req.session.save(resolve));
