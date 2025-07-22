@@ -2,7 +2,7 @@
 
 import Input from "@/components/UI/Input";
 import { CreateMultisigFormValues } from "@/types";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 
 interface SetSignersType {
   formData: CreateMultisigFormValues;
@@ -22,6 +22,12 @@ export default function SetSigners({ formData, setFormData }: SetSignersType) {
 
   const addSigner = () => {
     setFormData({ ...formData, signers: [...signers, "0x"] });
+  };
+
+  const removeSigner = (index: number) => {
+    const updatedSigners = [...signers];
+    updatedSigners.splice(index, 1);
+    setFormData({ ...formData, signers: updatedSigners });
   };
 
   const handleThresholdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,14 +50,22 @@ export default function SetSigners({ formData, setFormData }: SetSignersType) {
       </div>
       <div className="py-4 px-14">
         {signers.map((signer, i) => (
-          <Input
-            key={i}
-            keyTag={i}
-            label={`Signer ${i + 1}`}
-            name="signers"
-            value={signer}
-            onChange={(e) => handleSignerChange(i, e.target.value)}
-          />
+          <div key={i} className="flex items-bottom gap-2 mb-2">
+            <Input
+              className="w-[450px]"
+              label={`Signer ${i + 1}`}
+              name="signers"
+              value={signer}
+              onChange={(e) => handleSignerChange(i, e.target.value)}
+            />
+            <button
+              type="button"
+              onClick={() => removeSigner(i)}
+              className="mt-8 p-1 hover:text-red-600"
+            >
+              <Trash2 className="text-red-500" size={18} />
+            </button>
+          </div>
         ))}
         <div
           onClick={() => addSigner()}
