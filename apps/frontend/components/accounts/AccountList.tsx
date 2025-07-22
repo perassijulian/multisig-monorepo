@@ -6,6 +6,8 @@ import { getMultisigsFromUser } from "@/lib/flows/getMultisigs";
 import { useToast } from "../context/ToastContext";
 import { Multisig } from "@/types";
 import { useAccount } from "wagmi";
+import Skeleton from "../UI/Skeleton";
+import Link from "next/link";
 
 export default function AccountList() {
   const { address } = useAccount();
@@ -31,11 +33,29 @@ export default function AccountList() {
     fetchMultisigs();
   }, [address]);
 
-  //TODO use skeleton
-  if (isLoading) return <div>Loading..</div>;
-  if (!isLoading && accounts.length === 0) {
-    <div>You have no accounts yet. Create wallet first! </div>;
+  if (isLoading) {
+    return (
+      <div className="mt-4 space-y-2">
+        <Skeleton className="h-6" />
+        <Skeleton className="h-6" />
+      </div>
+    );
   }
+
+  if (accounts.length === 0) {
+    return (
+      <div className="text-textMuted mt-2 flex items-center gap-2">
+        You have no accounts yet.
+        <Link
+          href="/new-wallet/create"
+          className="text-primary underline cursor-pointer"
+        >
+          Create wallet
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div>
       {accounts.map((account) => (
